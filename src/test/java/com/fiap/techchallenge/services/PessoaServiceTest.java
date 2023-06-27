@@ -1,6 +1,7 @@
 package com.fiap.techchallenge.services;
 
 import com.fiap.techchallenge.dtos.PessoaDTO;
+import com.fiap.techchallenge.entities.Pessoa;
 import com.fiap.techchallenge.enums.SexoEnum;
 import com.fiap.techchallenge.exceptions.PessoaExisteException;
 import com.fiap.techchallenge.repositories.PessoaRepository;
@@ -10,16 +11,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(SpringExtension.class)
 class PessoaServiceTest {
 
     @InjectMocks
@@ -30,7 +29,7 @@ class PessoaServiceTest {
 
     private PessoaDTO obterPessoaDTO() {
         PessoaDTO pessoaDTO = new PessoaDTO();
-        pessoaDTO.setNome("Felipe");
+        pessoaDTO.setNome("Teste");
         pessoaDTO.setCpf("1");
         pessoaDTO.setSexo(SexoEnum.FEMININO);
         pessoaDTO.setDataDeNascimento(LocalDate.now());
@@ -48,4 +47,12 @@ class PessoaServiceTest {
         assertEquals("Pessoa já cadastrada com este CPF", pessoaExisteException.getMessage());
     }
 
+    @Test
+    void cadastrarPessoa() {
+        when(pessoaRepository.save(Mockito.any())).thenReturn( new Pessoa("Teste", LocalDate.now(), SexoEnum.FEMININO, "1"));
+
+        PessoaDTO pessoaDTO = pessoaService.cadastrarPessoa(obterPessoaDTO());
+
+        assertNotNull(pessoaDTO);
+    }
 }
