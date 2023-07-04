@@ -30,12 +30,11 @@ public enum EstadoEnum {
 
     private String estado;
 
-    private EstadoEnum(String estado) {
+    EstadoEnum(String estado) {
         this.estado = estado;
     }
 
     public String getEstado() {
         return estado;
     }
-
 }

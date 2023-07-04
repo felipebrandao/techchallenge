@@ -23,8 +23,9 @@ public class EnderecoController {
     private EnderecoService enderecoService;
 
     private static final Logger LOGGER = LogManager.getLogger(EnderecoController.class);
+
     @PostMapping
-    public ResponseEntity cadastro(@Valid @RequestBody EnderecoDTO enderecoDTO, HttpServletRequest request, HttpServletResponse response){
+    public ResponseEntity<EnderecoDTO> cadastro(@Valid @RequestBody EnderecoDTO enderecoDTO, HttpServletRequest request, HttpServletResponse response){
         LOGGER.info("Inicio da requisição");
         EnderecoDTO enderecoGravado = enderecoService.cadastrarEndereco(enderecoDTO);
         LOGGER.info("Fim da requisição");

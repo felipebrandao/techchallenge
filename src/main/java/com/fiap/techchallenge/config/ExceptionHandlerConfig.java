@@ -23,14 +23,15 @@ import java.util.List;
 public class ExceptionHandlerConfig {
 
     private static final Logger LOGGER = LogManager.getLogger(ExceptionHandlerConfig.class);
+
     @ExceptionHandler(PessoaExisteException.class)
-    public ResponseEntity handlePessoaException(PessoaExisteException ex) {
+    public ResponseEntity<Error> handlePessoaException(PessoaExisteException ex) {
         LOGGER.error("Erro na requisição, erro: ", ex);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Error(ex.getMessage()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity handleException(MethodArgumentNotValidException ex) {
+    public ResponseEntity<List<ErroDeFormularioDTO>> handleException(MethodArgumentNotValidException ex) {
         LOGGER.error("Erro na requisição, erro: ", ex);
 
         List<ErroDeFormularioDTO> dto = new ArrayList<>();
@@ -45,7 +46,7 @@ public class ExceptionHandlerConfig {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity handleException(Exception ex){
+    public ResponseEntity<String> handleException(Exception ex){
         LOGGER.error("Erro na requisição, erro: ", ex);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ocorreu um erro inesperado");
     }

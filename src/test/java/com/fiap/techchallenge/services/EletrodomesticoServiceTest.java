@@ -23,7 +23,7 @@ class EletrodomesticoServiceTest {
     @Mock
     private EletrodomesticoRepository eletrodomesticoRepository;
 
-    private EletrodomesticoDTO obterEletrodomesticoDTO(){
+    private EletrodomesticoDTO obterEletrodomesticoDTO() {
         EletrodomesticoDTO eletrodomesticoDTO = new EletrodomesticoDTO();
 
         eletrodomesticoDTO.setNome("Teste");
@@ -32,9 +32,10 @@ class EletrodomesticoServiceTest {
 
         return eletrodomesticoDTO;
     }
+
     @Test
     void cadastrarEndereco() {
-        when(eletrodomesticoRepository.save(Mockito.any())).thenReturn( new Eletrodomestico("Teste", "Teste", Double.valueOf(1L)));
+        when(eletrodomesticoRepository.save(Mockito.any())).thenReturn(new Eletrodomestico("Teste", "Teste", Double.valueOf(1L)));
 
         EletrodomesticoDTO eletrodomesticoDTO = eletrodomesticoService.cadastrarEndereco(obterEletrodomesticoDTO());
 

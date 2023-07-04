@@ -49,7 +49,7 @@ class PessoaServiceTest {
 
     @Test
     void cadastrarPessoa() {
-        when(pessoaRepository.save(Mockito.any())).thenReturn( new Pessoa("Teste", LocalDate.now(), SexoEnum.FEMININO, "1"));
+        when(pessoaRepository.save(Mockito.any())).thenReturn(new Pessoa("Teste", LocalDate.now(), SexoEnum.FEMININO, "1"));
 
         PessoaDTO pessoaDTO = pessoaService.cadastrarPessoa(obterPessoaDTO());
 

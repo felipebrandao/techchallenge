@@ -27,7 +27,7 @@ class EnderecoControllerTest {
     @MockBean
     EnderecoService enderecoService;
 
-    private EnderecoDTO obterEnderecoDTO(){
+    private EnderecoDTO obterEnderecoDTO() {
         EnderecoDTO enderecoDTO = new EnderecoDTO();
 
         enderecoDTO.setRua("Rua");
@@ -50,6 +50,5 @@ class EnderecoControllerTest {
                 .content(objectMapper.writeValueAsString(obterEnderecoDTO())));
 
         result.andExpect(status().isCreated());
-
     }
 }

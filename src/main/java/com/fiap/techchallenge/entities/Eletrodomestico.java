@@ -15,10 +15,13 @@ public class Eletrodomestico {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(name = "nome")
     private String nome;
+
     @Column(name = "modelo")
     private String modelo;
+
     @Column(name = "potencia")
     private Double potencia;
 

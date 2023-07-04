@@ -14,15 +14,17 @@ import lombok.Setter;
 public class EletrodomesticoDTO {
     @JsonProperty
     private Long id;
+
     @JsonProperty
     @NotBlank(message = "Nome do Eletrodoméstico é um campo obrigatório e não pode estar em branco")
     private String nome;
+
     @JsonProperty
     @NotBlank(message = "Modelo do Eletrodoméstico é um campo obrigatório e não pode estar em branco")
     private String modelo;
+
     @JsonProperty
     @PositiveOrZero
-    //@NotBlank(message = "Potência do Eletrodoméstico é um campo obrigatório e não pode estar em branco")
     private Double potencia;
 
     public EletrodomesticoDTO(Eletrodomestico eletrodomestico) {

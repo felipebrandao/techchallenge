@@ -54,5 +54,4 @@ class PessoaControllerTest {
 
         result.andExpect(status().isCreated());
     }
-
 }

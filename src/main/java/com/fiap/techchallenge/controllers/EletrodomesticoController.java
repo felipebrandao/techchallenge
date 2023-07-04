@@ -22,8 +22,9 @@ public class EletrodomesticoController {
     @Autowired
     private EletrodomesticoService eletrodomesticoService;
     private static final Logger LOGGER = LogManager.getLogger(EletrodomesticoController.class);
+
     @PostMapping
-    public ResponseEntity cadastro(@Valid @RequestBody EletrodomesticoDTO eletrodomesticoDTO, HttpServletRequest request, HttpServletResponse response){
+    public ResponseEntity<EletrodomesticoDTO> cadastro(@Valid @RequestBody EletrodomesticoDTO eletrodomesticoDTO, HttpServletRequest request, HttpServletResponse response){
         LOGGER.info("Inicio da requisição");
         EletrodomesticoDTO enderecoGravado = eletrodomesticoService.cadastrarEndereco(eletrodomesticoDTO);
         LOGGER.info("Fim da requisição");

@@ -23,8 +23,9 @@ public class PessoaController {
     private PessoaService pessoaService;
 
     private static final Logger LOGGER = LogManager.getLogger(PessoaController.class);
+
     @PostMapping
-    public ResponseEntity cadastro(@Valid @RequestBody PessoaDTO pessoaDTO,
+    public ResponseEntity<PessoaDTO> cadastro(@Valid @RequestBody PessoaDTO pessoaDTO,
                                    HttpServletRequest request, HttpServletResponse response){
         LOGGER.info("Inicio da requisição");
         PessoaDTO pessoaGravada =pessoaService.cadastrarPessoa(pessoaDTO);

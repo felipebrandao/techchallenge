@@ -26,7 +26,7 @@ class EletrodomesticoControllerTest {
     @MockBean
     EletrodomesticoService eletrodomesticoService;
 
-    private EletrodomesticoDTO obterEletrodomesticoDTO(){
+    private EletrodomesticoDTO obterEletrodomesticoDTO() {
         EletrodomesticoDTO eletrodomesticoDTO = new EletrodomesticoDTO();
 
         eletrodomesticoDTO.setNome("Teste");
@@ -35,6 +35,7 @@ class EletrodomesticoControllerTest {
 
         return eletrodomesticoDTO;
     }
+
     @Test
     void cadastroSucesso() throws Exception {
         when(eletrodomesticoService.cadastrarEndereco(Mockito.any())).thenReturn(obterEletrodomesticoDTO());

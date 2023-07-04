@@ -24,7 +24,7 @@ class EnderecoServiceTest {
     @Mock
     private EnderecoRepository enderecoRepository;
 
-    private EnderecoDTO obterEnderecoDTO(){
+    private EnderecoDTO obterEnderecoDTO() {
         EnderecoDTO enderecoDTO = new EnderecoDTO();
 
         enderecoDTO.setRua("Rua");

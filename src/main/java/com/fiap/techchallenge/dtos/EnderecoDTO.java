@@ -15,20 +15,23 @@ import lombok.Setter;
 public class EnderecoDTO {
     @JsonProperty
     private Long id;
+
     @JsonProperty
     @NotBlank(message = "Rua do Endereço é um campo obrigatório e não pode estar em branco")
     private String rua;
+
     @JsonProperty
-    //@NotBlank(message = "Número do Endereço é um campo obrigatório e não pode estar em branco")
     private Integer numero;
+
     @JsonProperty
     @NotBlank(message = "Bairro do Endereço é um campo obrigatório e não pode estar em branco")
     private String bairro;
+
     @JsonProperty
     @NotBlank(message = "Cidade do Endereço é um campo obrigatório e não pode estar em branco")
     private String cidade;
+
     @JsonProperty
-    //@NotBlank(message = "Estado do Endereço é um campo obrigatório e não pode estar em branco")
     private EstadoEnum estado;
 
     public EnderecoDTO(Endereco endereco) {
@@ -43,5 +46,4 @@ public class EnderecoDTO {
     public Endereco toEntity() {
         return new Endereco(this.rua, this.numero, this.bairro, this.cidade, this.estado);
     }
-
 }

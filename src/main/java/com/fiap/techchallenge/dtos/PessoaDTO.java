@@ -11,22 +11,25 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.br.CPF;
 
 import java.time.LocalDate;
+
 @NoArgsConstructor
 @Getter
 @Setter
 public class PessoaDTO {
     @JsonProperty
     private Long id;
+
     @JsonProperty
     @NotBlank(message = "Nome da Pessoa é um campo obrigatório e não pode estar em branco")
     private String nome;
+
     @JsonProperty
     @JsonFormat(pattern = "dd/MM/yyyy")
-    //@NotBlank(message = "Data de Nascimento da Pessoa é um campo obrigatório e não pode estar em branco")
     private LocalDate dataDeNascimento;
+
     @JsonProperty
-    //@NotBlank(message = "Sexo da Pessoa é um campo obrigatório e não pode estar em branco")
     private SexoEnum sexo;
+
     @JsonProperty
     @CPF
     @NotBlank(message = "CPF da Pessoa é um campo obrigatório e não pode estar em branco")
@@ -43,5 +46,4 @@ public class PessoaDTO {
     public Pessoa toEntity() {
         return new Pessoa(this.nome, this.dataDeNascimento, this.sexo, this.cpf);
     }
-
 }
