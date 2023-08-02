@@ -27,14 +27,10 @@ public class EletrodomesticoDTO {
     @PositiveOrZero
     private Double potencia;
 
-    public EletrodomesticoDTO(Eletrodomestico eletrodomestico) {
-        this.id = eletrodomestico.getId();
-        this.nome = eletrodomestico.getNome();
-        this.modelo = eletrodomestico.getModelo();
-        this.potencia = eletrodomestico.getPotencia();
-    }
-
-    public Eletrodomestico toEntity() {
-        return new Eletrodomestico(this.nome, this.modelo, this.potencia);
+    public EletrodomesticoDTO(Long id, String nome, String modelo, Double potencia) {
+        this.id = id;
+        this.nome = nome;
+        this.modelo = modelo;
+        this.potencia = potencia;
     }
 }

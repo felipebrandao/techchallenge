@@ -18,9 +18,9 @@ public class EnderecoServiceImpl implements EnderecoService {
     private static final Logger LOGGER = LogManager.getLogger(EnderecoServiceImpl.class);
     @Override
     public EnderecoDTO cadastrarEndereco(EnderecoDTO enderecoDTO) {
-        LOGGER.info("Inicio do metódo");
+        LOGGER.info("Inicio do metódo - EnderecoServiceImpl - cadastrarEndereco");
         Endereco endereco = enderecoRepository.save(enderecoDTO.toEntity());
-        LOGGER.info("Fim do metódo");
+        LOGGER.info("Fim do metódo - EnderecoServiceImpl - cadastrarEndereco");
         return new EnderecoDTO(endereco);
     }
 }

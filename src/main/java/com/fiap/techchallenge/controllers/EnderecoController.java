@@ -26,9 +26,9 @@ public class EnderecoController {
 
     @PostMapping
     public ResponseEntity<EnderecoDTO> cadastro(@Valid @RequestBody EnderecoDTO enderecoDTO, HttpServletRequest request, HttpServletResponse response){
-        LOGGER.info("Inicio da requisição");
+        LOGGER.info("Inicio da requisição - EnderecoController - cadastro");
         EnderecoDTO enderecoGravado = enderecoService.cadastrarEndereco(enderecoDTO);
-        LOGGER.info("Fim da requisição");
+        LOGGER.info("Fim da requisição - EnderecoController - cadastro");
         return ResponseEntity.status(HttpStatus.CREATED).body(enderecoGravado);
     }
 }

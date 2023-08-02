@@ -27,9 +27,9 @@ public class PessoaController {
     @PostMapping
     public ResponseEntity<PessoaDTO> cadastro(@Valid @RequestBody PessoaDTO pessoaDTO,
                                    HttpServletRequest request, HttpServletResponse response){
-        LOGGER.info("Inicio da requisição");
+        LOGGER.info("Inicio da requisição - PessoaController - cadastro");
         PessoaDTO pessoaGravada =pessoaService.cadastrarPessoa(pessoaDTO);
-        LOGGER.info("Fim da requisição");
+        LOGGER.info("Fim da requisição - PessoaController - cadastro");
         return ResponseEntity.status(HttpStatus.CREATED).body(pessoaGravada);
     }
 }

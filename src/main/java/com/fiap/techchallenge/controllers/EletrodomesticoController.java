@@ -25,9 +25,9 @@ public class EletrodomesticoController {
 
     @PostMapping
     public ResponseEntity<EletrodomesticoDTO> cadastro(@Valid @RequestBody EletrodomesticoDTO eletrodomesticoDTO, HttpServletRequest request, HttpServletResponse response){
-        LOGGER.info("Inicio da requisição");
+        LOGGER.info("Inicio da requisição - EletrodomesticoController - cadastro");
         EletrodomesticoDTO enderecoGravado = eletrodomesticoService.cadastrarEndereco(eletrodomesticoDTO);
-        LOGGER.info("Fim da requisição");
+        LOGGER.info("Fim da requisição - EletrodomesticoController - cadastro");
         return ResponseEntity.status(HttpStatus.CREATED).body(enderecoGravado);
     }
 }
