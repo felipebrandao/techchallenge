@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class PessoaDTO {
-    @JsonProperty
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
     @JsonProperty

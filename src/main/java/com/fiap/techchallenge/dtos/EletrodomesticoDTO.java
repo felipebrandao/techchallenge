@@ -12,7 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class EletrodomesticoDTO {
-    @JsonProperty
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
     @JsonProperty
