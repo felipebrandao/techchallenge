@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table
+@Table(name = "pessoa")
 @NoArgsConstructor
 @Getter
 @Setter
@@ -18,13 +18,17 @@ public class Pessoa {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(name = "nome")
     private String nome;
-    @Column
+
+    @Column(name = "data_de_nascimento")
     private LocalDate dataDeNascimento;
+
     @Column(name = "sexo")
     @Enumerated(EnumType.STRING)
     private SexoEnum sexo;
+
     @Column(name = "cpf")
     private String cpf;
 
