@@ -4,13 +4,16 @@ import com.fiap.techchallenge.dtos.PessoaDTO;
 import com.fiap.techchallenge.entities.Pessoa;
 import com.fiap.techchallenge.enums.SexoEnum;
 import com.fiap.techchallenge.exceptions.PessoaExisteException;
+import com.fiap.techchallenge.mappers.PessoaMapper;
 import com.fiap.techchallenge.repositories.PessoaRepository;
 import com.fiap.techchallenge.services.impl.PessoaServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mapstruct.factory.Mappers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
@@ -23,6 +26,9 @@ class PessoaServiceTest {
 
     @InjectMocks
     private PessoaService pessoaService = new PessoaServiceImpl();
+
+    @Spy
+    private PessoaMapper pessoaMapper = Mappers.getMapper(PessoaMapper.class);
 
     @Mock
     private PessoaRepository pessoaRepository;

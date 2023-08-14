@@ -3,13 +3,16 @@ package com.fiap.techchallenge.services;
 import com.fiap.techchallenge.dtos.EnderecoDTO;
 import com.fiap.techchallenge.entities.Endereco;
 import com.fiap.techchallenge.enums.EstadoEnum;
+import com.fiap.techchallenge.mappers.EnderecoMapper;
 import com.fiap.techchallenge.repositories.EnderecoRepository;
 import com.fiap.techchallenge.services.impl.EnderecoServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mapstruct.factory.Mappers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -20,6 +23,9 @@ class EnderecoServiceTest {
 
     @InjectMocks
     private EnderecoService enderecoService = new EnderecoServiceImpl();
+
+    @Spy
+    private EnderecoMapper enderecoMapper = Mappers.getMapper(EnderecoMapper.class);
 
     @Mock
     private EnderecoRepository enderecoRepository;
