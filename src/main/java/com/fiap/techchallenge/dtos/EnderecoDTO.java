@@ -42,8 +42,4 @@ public class EnderecoDTO {
         this.cidade = endereco.getCidade();
         this.estado = endereco.getEstado();
     }
-
-    public Endereco toEntity() {
-        return new Endereco(this.rua, this.numero, this.bairro, this.cidade, this.estado);
-    }
 }

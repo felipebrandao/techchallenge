@@ -2,6 +2,7 @@ package com.fiap.techchallenge.services.impl;
 
 import com.fiap.techchallenge.dtos.EnderecoDTO;
 import com.fiap.techchallenge.entities.Endereco;
+import com.fiap.techchallenge.mappers.EnderecoMapper;
 import com.fiap.techchallenge.repositories.EnderecoRepository;
 import com.fiap.techchallenge.services.EnderecoService;
 import org.apache.logging.log4j.LogManager;
@@ -15,12 +16,14 @@ public class EnderecoServiceImpl implements EnderecoService {
     @Autowired
     private EnderecoRepository enderecoRepository;
 
+    @Autowired
+    private EnderecoMapper enderecoMapper;
     private static final Logger LOGGER = LogManager.getLogger(EnderecoServiceImpl.class);
     @Override
     public EnderecoDTO cadastrarEndereco(EnderecoDTO enderecoDTO) {
         LOGGER.info("Inicio do metódo - EnderecoServiceImpl - cadastrarEndereco");
-        Endereco endereco = enderecoRepository.save(enderecoDTO.toEntity());
+        Endereco endereco = enderecoRepository.save(enderecoMapper.toEntity(enderecoDTO));
         LOGGER.info("Fim do metódo - EnderecoServiceImpl - cadastrarEndereco");
-        return new EnderecoDTO(endereco);
+        return enderecoMapper.toDTO(endereco);
     }
 }

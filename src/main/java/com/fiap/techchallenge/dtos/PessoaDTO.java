@@ -42,8 +42,4 @@ public class PessoaDTO {
         this.sexo = pessoa.getSexo();
         this.cpf = pessoa.getCpf();
     }
-
-    public Pessoa toEntity() {
-        return new Pessoa(this.nome, this.dataDeNascimento, this.sexo, this.cpf);
-    }
 }

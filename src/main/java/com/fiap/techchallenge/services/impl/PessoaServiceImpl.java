@@ -3,6 +3,7 @@ package com.fiap.techchallenge.services.impl;
 import com.fiap.techchallenge.dtos.PessoaDTO;
 import com.fiap.techchallenge.entities.Pessoa;
 import com.fiap.techchallenge.exceptions.PessoaExisteException;
+import com.fiap.techchallenge.mappers.PessoaMapper;
 import com.fiap.techchallenge.repositories.PessoaRepository;
 import com.fiap.techchallenge.services.PessoaService;
 import org.apache.logging.log4j.LogManager;
@@ -14,14 +15,18 @@ public class PessoaServiceImpl implements PessoaService {
 
     @Autowired
     private PessoaRepository pessoaRepository;
+
+    @Autowired
+    private PessoaMapper pessoaMapper;
+
     private static final Logger LOGGER = LogManager.getLogger(PessoaServiceImpl.class);
     @Override
     public PessoaDTO cadastrarPessoa(PessoaDTO pessoaDTO) {
         LOGGER.info("Inicio do metódo - PessoaServiceImpl - cadastrarPessoa");
         isExistePessoa(pessoaDTO.getCpf());
-        Pessoa pessoa = pessoaRepository.save(pessoaDTO.toEntity());
+        Pessoa pessoa = pessoaRepository.save(pessoaMapper.toEntity(pessoaDTO));
         LOGGER.info("Fim do metódo - PessoaServiceImpl - cadastrarPessoa");
-        return new PessoaDTO(pessoa);
+        return pessoaMapper.toDTO(pessoa);
     }
 
     private void isExistePessoa(String cpf) {
