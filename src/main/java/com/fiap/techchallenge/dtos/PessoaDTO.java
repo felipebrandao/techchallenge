@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fiap.techchallenge.entities.Pessoa;
 import com.fiap.techchallenge.enums.SexoEnum;
 import jakarta.validation.constraints.NotBlank;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,6 +16,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
 public class PessoaDTO {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
