@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fiap.techchallenge.entities.Endereco;
 import com.fiap.techchallenge.enums.EstadoEnum;
 import jakarta.validation.constraints.NotBlank;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,6 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
 public class EnderecoDTO {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
