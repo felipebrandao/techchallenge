@@ -1,6 +1,7 @@
 package com.fiap.techchallenge.entities;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import com.fiap.techchallenge.enums.SexoEnum;
 import jakarta.persistence.*;
@@ -31,6 +32,9 @@ public class Pessoa {
 
     @Column(name = "cpf")
     private String cpf;
+
+    @OneToMany(mappedBy = "pessoa", fetch = FetchType.LAZY)
+    private List<Morador> morador;
 
     public Pessoa(String nome, LocalDate dataDeNascimento, SexoEnum sexo, String cpf) {
         this.nome = nome;
