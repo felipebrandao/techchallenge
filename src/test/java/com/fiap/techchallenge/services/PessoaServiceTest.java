@@ -7,7 +7,9 @@ import com.fiap.techchallenge.exceptions.PessoaExisteException;
 import com.fiap.techchallenge.exceptions.PessoaNaoEncontradaException;
 import com.fiap.techchallenge.mappers.PessoaMapper;
 import com.fiap.techchallenge.repositories.PessoaRepository;
+import com.fiap.techchallenge.services.impl.ConsumoServiceImpl;
 import com.fiap.techchallenge.services.impl.PessoaServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
@@ -27,8 +29,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(SpringExtension.class)
 class PessoaServiceTest {
 
-    @InjectMocks
-    private PessoaService pessoaService = new PessoaServiceImpl();
+    private PessoaService pessoaService;
 
     @Spy
     private PessoaMapper pessoaMapper = Mappers.getMapper(PessoaMapper.class);
@@ -39,6 +40,11 @@ class PessoaServiceTest {
     private static final String CPF_EXISTENTE = "1";
     private static final Long ID_EXISTENTE = 1L;
     private static final String NOME_ANTIGO = "Antigo Nome";
+
+    @BeforeEach
+    void setup() {
+        pessoaService = new PessoaServiceImpl(pessoaRepository, pessoaMapper);
+    }
 
     private PessoaDTO obterPessoaDTO() {
         PessoaDTO pessoaDTO = new PessoaDTO();

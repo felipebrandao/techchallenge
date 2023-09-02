@@ -3,10 +3,12 @@ package com.fiap.techchallenge.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fiap.techchallenge.dtos.PessoaDTO;
 import com.fiap.techchallenge.enums.SexoEnum;
 import com.fiap.techchallenge.exceptions.PessoaNaoEncontradaException;
 import com.fiap.techchallenge.services.PessoaService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -32,17 +34,22 @@ class PessoaControllerTest {
     @Autowired
     MockMvc mockMvc;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     @MockBean
     PessoaService pessoaService;
+
+    @BeforeEach
+    public void setup() {
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+    }
 
     @Test
     void testCadastroSucesso() throws Exception {
         PessoaDTO pessoaDTO = obterPessoaDTO();
         when(pessoaService.cadastrarPessoa(Mockito.any())).thenReturn(pessoaDTO);
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JSR310Module());
-        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
         ResultActions result = mockMvc.perform(post("/pessoa")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -55,10 +62,6 @@ class PessoaControllerTest {
     @Test
     void testCadastroFalha() throws Exception {
         when(pessoaService.cadastrarPessoa(Mockito.any())).thenThrow(new PessoaNaoEncontradaException("teste"));
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JSR310Module());
-        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
         PessoaDTO pessoaDTO = obterPessoaDTO();
         ResultActions result = mockMvc.perform(post("/pessoa")
@@ -73,10 +76,6 @@ class PessoaControllerTest {
         Long idExistente = 1L;
         PessoaDTO pessoaDTO = obterPessoaDTO();
         when(pessoaService.atualizarPessoa(idExistente, pessoaDTO)).thenReturn(pessoaDTO);
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JSR310Module());
-        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
         ResultActions result = mockMvc.perform(put("/pessoa/{id}", idExistente)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -107,10 +106,6 @@ class PessoaControllerTest {
 
         when(pessoaService.getPessoaById(id)).thenReturn(pessoaDTO);
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JSR310Module());
-        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-
         mockMvc.perform(get("/pessoa/{id}", id))
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(pessoaDTO)));
@@ -124,10 +119,6 @@ class PessoaControllerTest {
         List<PessoaDTO> pessoas = new ArrayList<>();
         PessoaDTO pessoaDTO = obterPessoaDTO();
         pessoas.add(pessoaDTO);
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JSR310Module());
-        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
         when(pessoaService.buscarPessoasPorNomeECPF(eq(nome), eq(cpf))).thenReturn(pessoas);
 
