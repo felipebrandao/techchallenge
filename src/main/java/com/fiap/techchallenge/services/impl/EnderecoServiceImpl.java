@@ -32,30 +32,10 @@ public class EnderecoServiceImpl implements EnderecoService {
                 .collect(Collectors.toList());
     }
 
+    @Override
     public List<EnderecoDTO> buscarEnderecosPorFiltros(String rua, String bairro, String cidade) {
-        List<Endereco> enderecos = enderecoRepository.findAll();
-
-        if (rua != null && !rua.isEmpty()) {
-            enderecos = enderecos.stream()
-                    .filter(endereco -> endereco.getRua().contains(rua))
-                    .collect(Collectors.toList());
-        }
-
-        if (bairro != null && !bairro.isEmpty()) {
-            enderecos = enderecos.stream()
-                    .filter(endereco -> endereco.getBairro().contains(bairro))
-                    .collect(Collectors.toList());
-        }
-
-        if (cidade != null && !cidade.isEmpty()) {
-            enderecos = enderecos.stream()
-                    .filter(endereco -> endereco.getCidade().contains(cidade))
-                    .collect(Collectors.toList());
-        }
-
-        return enderecos.stream()
-                .map(endereco -> enderecoMapper.toDTO(endereco))
-                .collect(Collectors.toList());
+        List<Endereco> enderecos = enderecoRepository.buscarEnderecosPorFiltros(rua, bairro, cidade);
+        return enderecoMapper.toDTOs(enderecos);
     }
 
     @Override
