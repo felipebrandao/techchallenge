@@ -19,11 +19,15 @@ import java.util.stream.Collectors;
 @Service
 public class PessoaServiceImpl implements PessoaService {
 
-    @Autowired
     private PessoaRepository pessoaRepository;
 
-    @Autowired
     private PessoaMapper pessoaMapper;
+
+    @Autowired
+    public PessoaServiceImpl(PessoaRepository pessoaRepository, PessoaMapper pessoaMapper) {
+        this.pessoaRepository = pessoaRepository;
+        this.pessoaMapper = pessoaMapper;
+    }
 
     @Override
     public PessoaDTO cadastrarPessoa(PessoaDTO pessoaDTO) {
@@ -40,7 +44,7 @@ public class PessoaServiceImpl implements PessoaService {
         log.info("Inicio do metódo - PessoaServiceImpl - atualizarPessoa");
         Pessoa pessoaUpdate;
 
-        if (!isPeloMenosUmCampoPreenchido(pessoaDTO)) throw new PessoaCamposNaoPreenchidosException("Pelo menos um campo deve estar preenchido.");
+        if (!pessoaDTO.isPeloMenosUmCampoPreenchido()) throw new PessoaCamposNaoPreenchidosException("Pelo menos um campo deve estar preenchido.");
 
         Pessoa pessoaEncontrada = pessoaRepository.findByIdAndCPF(id, pessoaDTO.getCpf());
 
@@ -100,13 +104,6 @@ public class PessoaServiceImpl implements PessoaService {
             throw new PessoaExisteException("Pessoa já cadastrada com este CPF.");
         }
         log.info("Fim do metódo - PessoaServiceImpl - isExistePessoa");
-    }
-
-    private boolean isPeloMenosUmCampoPreenchido(PessoaDTO pessoaDTO) {
-        return pessoaDTO.getNome() != null && !pessoaDTO.getNome().isEmpty()
-                || pessoaDTO.getCpf() != null && !pessoaDTO.getCpf().isEmpty()
-                || pessoaDTO.getDataDeNascimento() != null
-                || pessoaDTO.getSexo() != null;
     }
 
 }
