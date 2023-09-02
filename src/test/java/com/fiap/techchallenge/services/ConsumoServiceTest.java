@@ -16,6 +16,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.*;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -57,7 +58,7 @@ class ConsumoServiceTest {
     void testEncontrarConsumoPorId() {
         Long idConsumo = 1L;
         Consumo consumoMock = new Consumo();
-        Mockito.when(consumoRepository.findById(idConsumo)).thenReturn(java.util.Optional.of(consumoMock));
+        Mockito.when(consumoRepository.findById(idConsumo)).thenReturn(Optional.of(consumoMock));
         Mockito.when(consumoMapper.toDTO(consumoMock)).thenReturn(new ConsumoDTO());
 
         ConsumoDTO result = consumoService.encontrarConsumoPorId(idConsumo);
@@ -69,7 +70,7 @@ class ConsumoServiceTest {
     void testDeletarConsumo() {
         Long idConsumo = 1L;
         Consumo consumoMock = new Consumo();
-        Mockito.when(consumoRepository.findById(idConsumo)).thenReturn(java.util.Optional.of(consumoMock));
+        Mockito.when(consumoRepository.findById(idConsumo)).thenReturn(Optional.of(consumoMock));
 
         consumoService.deletarConsumo(idConsumo);
     }

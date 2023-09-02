@@ -1,7 +1,6 @@
 package com.fiap.techchallenge.config;
 
 import com.fiap.techchallenge.dtos.ErroDeFormularioDTO;
-import com.fiap.techchallenge.exceptions.PessoaExisteException;
 import com.fiap.techchallenge.exceptions.TechChallengeException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;

@@ -3,6 +3,7 @@ package com.fiap.techchallenge.services;
 import com.fiap.techchallenge.dtos.PessoaDTO;
 import com.fiap.techchallenge.entities.Pessoa;
 import com.fiap.techchallenge.enums.SexoEnum;
+import com.fiap.techchallenge.exceptions.PessoaCamposNaoPreenchidosException;
 import com.fiap.techchallenge.exceptions.PessoaExisteException;
 import com.fiap.techchallenge.exceptions.PessoaNaoEncontradaException;
 import com.fiap.techchallenge.mappers.PessoaMapper;
@@ -20,6 +21,7 @@ import org.mockito.Spy;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -205,4 +207,13 @@ class PessoaServiceTest {
         assertEquals(0, pessoasEncontradas.size());
     }
 
+    @Test
+    public void testAtualizarPessoaSemCamposPreenchidos() {
+        Long id = 1L;
+        PessoaDTO pessoaDTO = new PessoaDTO();
+
+        assertThrows(PessoaCamposNaoPreenchidosException.class, () -> {
+            pessoaService.atualizarPessoa(id, pessoaDTO);
+        });
+    }
 }

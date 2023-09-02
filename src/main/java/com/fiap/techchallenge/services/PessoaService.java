@@ -1,7 +1,6 @@
 package com.fiap.techchallenge.services;
 
 import com.fiap.techchallenge.dtos.PessoaDTO;
-import com.fiap.techchallenge.exceptions.PessoaExisteException;
 
 import java.util.List;
 

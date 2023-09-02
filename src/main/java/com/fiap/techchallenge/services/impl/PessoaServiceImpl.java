@@ -40,30 +40,25 @@ public class PessoaServiceImpl implements PessoaService {
 
     @Override
     public PessoaDTO atualizarPessoa(Long id, PessoaDTO pessoaDTO) {
-
         log.info("Inicio do metódo - PessoaServiceImpl - atualizarPessoa");
-        Pessoa pessoaUpdate;
 
         if (!pessoaDTO.isPeloMenosUmCampoPreenchido()) throw new PessoaCamposNaoPreenchidosException("Pelo menos um campo deve estar preenchido.");
 
         Pessoa pessoaEncontrada = pessoaRepository.findByIdAndCPF(id, pessoaDTO.getCpf());
 
-        if (pessoaEncontrada != null) {
-            pessoaUpdate = toEntityUpdate(pessoaDTO, pessoaEncontrada);
-            pessoaUpdate = pessoaRepository.save(pessoaUpdate);
-        } else {
-            throw new PessoaNaoEncontradaException("Pessoa com este id: " + id +  " e CPF: " + pessoaDTO.getCpf() + " não encontrada.");
-        }
+        if (pessoaEncontrada == null)
+            throw new PessoaNaoEncontradaException("Pessoa com este id: " + id + " e CPF: " + pessoaDTO.getCpf() + " não encontrada.");
+
+        Pessoa pessoaUpdate = toEntityUpdate(pessoaDTO, pessoaEncontrada);
+        pessoaUpdate = pessoaRepository.save(pessoaUpdate);
 
         log.info("Fim do metódo - PessoaServiceImpl - atualizarPessoa");
         return pessoaMapper.toDTO(pessoaUpdate);
-
     }
 
     public void deletarPessoa(Long id) {
         Pessoa pessoa = pessoaRepository.findById(id)
                 .orElseThrow(() -> new PessoaNaoEncontradaException("Pessoa com ID " + id + " não encontrada."));
-
         pessoaRepository.delete(pessoa);
     }
 
@@ -71,7 +66,6 @@ public class PessoaServiceImpl implements PessoaService {
     public PessoaDTO getPessoaById(Long id) {
         Pessoa pessoa = pessoaRepository.findById(id)
                 .orElseThrow(() -> new PessoaNaoEncontradaException("Pessoa com ID " + id + " não encontrada."));
-
         return pessoaMapper.toDTO(pessoa);
     }
 
@@ -84,16 +78,9 @@ public class PessoaServiceImpl implements PessoaService {
     }
 
     private Pessoa toEntityUpdate(PessoaDTO pessoaDTO, Pessoa pessoa) {
-        if (pessoaDTO.getNome() != null) {
-            pessoa.setNome(pessoaDTO.getNome());
-        }
-        if (pessoaDTO.getSexo() != null) {
-            pessoa.setSexo(pessoaDTO.getSexo());
-        }
-        if (pessoaDTO.getDataDeNascimento() != null) {
-            pessoa.setDataDeNascimento(pessoaDTO.getDataDeNascimento());
-        }
-
+        if (pessoaDTO.getNome() != null) pessoa.setNome(pessoaDTO.getNome());
+        if (pessoaDTO.getSexo() != null) pessoa.setSexo(pessoaDTO.getSexo());
+        if (pessoaDTO.getDataDeNascimento() != null) pessoa.setDataDeNascimento(pessoaDTO.getDataDeNascimento());
         return pessoa;
     }
 
@@ -105,5 +92,4 @@ public class PessoaServiceImpl implements PessoaService {
         }
         log.info("Fim do metódo - PessoaServiceImpl - isExistePessoa");
     }
-
 }
