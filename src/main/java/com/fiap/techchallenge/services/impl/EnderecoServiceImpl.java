@@ -2,14 +2,19 @@ package com.fiap.techchallenge.services.impl;
 
 import com.fiap.techchallenge.dtos.EnderecoDTO;
 import com.fiap.techchallenge.entities.Endereco;
+import com.fiap.techchallenge.exceptions.EnderecoNaoEncontradoException;
 import com.fiap.techchallenge.mappers.EnderecoMapper;
 import com.fiap.techchallenge.repositories.EnderecoRepository;
 import com.fiap.techchallenge.services.EnderecoService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+@Slf4j
 @Service
 public class EnderecoServiceImpl implements EnderecoService {
 
@@ -18,12 +23,32 @@ public class EnderecoServiceImpl implements EnderecoService {
 
     @Autowired
     private EnderecoMapper enderecoMapper;
-    private static final Logger LOGGER = LogManager.getLogger(EnderecoServiceImpl.class);
+
+    @Override
+    public List<EnderecoDTO> obterEnderecos() {
+        List<Endereco> enderecos = enderecoRepository.findAll();
+        return enderecos.stream()
+                .map(endereco -> enderecoMapper.toDTO(endereco))
+                .collect(Collectors.toList());
+    }
+
     @Override
     public EnderecoDTO cadastrarEndereco(EnderecoDTO enderecoDTO) {
-        LOGGER.info("Inicio do metódo - EnderecoServiceImpl - cadastrarEndereco");
+        log.info("Inicio do metódo - EnderecoServiceImpl - cadastrarEndereco");
         Endereco endereco = enderecoRepository.save(enderecoMapper.toEntity(enderecoDTO));
-        LOGGER.info("Fim do metódo - EnderecoServiceImpl - cadastrarEndereco");
+        log.info("Fim do metódo - EnderecoServiceImpl - cadastrarEndereco");
         return enderecoMapper.toDTO(endereco);
+    }
+
+    @Override
+    public void deletarEndereco(Long id) {
+        Optional<Endereco> enderecoOptional = enderecoRepository.findById(id);
+        if (enderecoOptional.isPresent()) {
+            Endereco enderecoExcluido = enderecoOptional.get();
+            enderecoRepository.deleteById(id);
+            enderecoMapper.toDTO(enderecoExcluido);
+        } else {
+            throw new EnderecoNaoEncontradoException("Endereço com ID " + id + " não encontrado.");
+        }
     }
 }

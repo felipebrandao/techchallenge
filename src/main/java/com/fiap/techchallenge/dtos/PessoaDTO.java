@@ -1,10 +1,12 @@
 package com.fiap.techchallenge.dtos;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fiap.techchallenge.entities.Pessoa;
 import com.fiap.techchallenge.enums.SexoEnum;
 import jakarta.validation.constraints.NotBlank;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,6 +17,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
 public class PessoaDTO {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
@@ -41,5 +44,13 @@ public class PessoaDTO {
         this.dataDeNascimento = pessoa.getDataDeNascimento();
         this.sexo = pessoa.getSexo();
         this.cpf = pessoa.getCpf();
+    }
+
+    @JsonIgnore
+    public boolean isPeloMenosUmCampoPreenchido() {
+        return getNome() != null && !getNome().isEmpty()
+                || getCpf() != null && !getCpf().isEmpty()
+                || getDataDeNascimento() != null
+                || getSexo() != null;
     }
 }
