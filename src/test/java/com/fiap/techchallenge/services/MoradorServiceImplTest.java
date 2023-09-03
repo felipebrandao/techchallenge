@@ -73,7 +73,6 @@ public class MoradorServiceImplTest {
 
     @Test
     public void testCriarMoradorCadastroNoEndereco() {
-        // Arrange
         MoradorDTO moradorDTO = new MoradorDTO();
         moradorDTO.setIdPessoa(1L);
         moradorDTO.setIdEndereco(2L);

@@ -8,8 +8,6 @@ import com.fiap.techchallenge.mappers.EletrodomesticoMapper;
 import com.fiap.techchallenge.repositories.EletrodomesticoRepository;
 import com.fiap.techchallenge.services.EletrodomesticoService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,22 +39,17 @@ public class EletrodomesticoServiceImpl implements EletrodomesticoService {
     @Override
     public EletrodomesticoDTO atualizarEletrodomestico(Long id, EletrodomesticoDTO eletrodomesticoDTO) {
         log.info("Início do método - EletrodomesticoServiceImpl - atualizarEletrodomestico");
-        Eletrodomestico eletrodomesticoUpdate;
 
         if (!isPeloMenosUmCampoPreenchido(eletrodomesticoDTO)) throw new EletrodomesticoCamposNaoPreenchidosException("Pelo menos um campo deve estar preenchido.");
 
         Eletrodomestico eletrodomesticoEncontrado = eletrodomesticoRepository.findById(id)
                 .orElseThrow(() -> new EletrodomesticoNaoEncontradoException("Eletrodoméstico com ID " + id + " não encontrado"));
 
-        if (eletrodomesticoEncontrado != null) {
-            eletrodomesticoUpdate = toEntityUpdate(eletrodomesticoDTO, eletrodomesticoEncontrado);
-            eletrodomesticoUpdate = eletrodomesticoRepository.save(eletrodomesticoUpdate);
-        } else {
-            throw new EletrodomesticoNaoEncontradoException("Eletrodoméstico com este id " + id + " não encontrado");
-        }
+        eletrodomesticoEncontrado = toEntityUpdate(eletrodomesticoDTO, eletrodomesticoEncontrado);
+        eletrodomesticoEncontrado = eletrodomesticoRepository.save(eletrodomesticoEncontrado);
 
         log.info("Fim do método - EletrodomesticoServiceImpl - atualizarEletrodomestico");
-        return eletrodomesticoMapper.toDTO(eletrodomesticoUpdate);
+        return eletrodomesticoMapper.toDTO(eletrodomesticoEncontrado);
     }
 
     @Override
@@ -95,16 +88,9 @@ public class EletrodomesticoServiceImpl implements EletrodomesticoService {
     }
 
     private Eletrodomestico toEntityUpdate(EletrodomesticoDTO eletrodomesticoDTO, Eletrodomestico eletrodomestico) {
-        if (eletrodomesticoDTO.getNome() != null) {
-            eletrodomestico.setNome(eletrodomesticoDTO.getNome());
-        }
-        if (eletrodomesticoDTO.getModelo() != null) {
-            eletrodomestico.setModelo(eletrodomesticoDTO.getModelo());
-        }
-        if (eletrodomesticoDTO.getPotencia() != null) {
-            eletrodomestico.setPotencia(eletrodomesticoDTO.getPotencia());
-        }
-
+        if (eletrodomesticoDTO.getNome() != null) eletrodomestico.setNome(eletrodomesticoDTO.getNome());
+        if (eletrodomesticoDTO.getModelo() != null) eletrodomestico.setModelo(eletrodomesticoDTO.getModelo());
+        if (eletrodomesticoDTO.getPotencia() != null) eletrodomestico.setPotencia(eletrodomesticoDTO.getPotencia());
         return eletrodomestico;
     }
 }

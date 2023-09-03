@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -63,17 +62,14 @@ public class EnderecoServiceImpl implements EnderecoService {
             throw new EnderecoCamposNaoPreenchidosException("Pelo menos um campo deve estar preenchido.");
         }
 
-        Optional<Endereco> enderecoOptional = enderecoRepository.findById(id);
+        Endereco endereco = enderecoRepository.findById(id)
+                .orElseThrow(() -> new EnderecoNaoEncontradoException("Endereço com este id: " + id + " não encontrado."));
 
-        if (enderecoOptional.isPresent()) {
-            Endereco enderecoEncontrado = enderecoOptional.get();
-            updateEntityFromDTO(enderecoDTO, enderecoEncontrado);
-            enderecoEncontrado = enderecoRepository.save(enderecoEncontrado);
-            log.info("Fim do método - EnderecoServiceImpl - atualizarEndereco");
-            return enderecoMapper.toDTO(enderecoEncontrado);
-        } else {
-            throw new EnderecoNaoEncontradoException("Endereço com este id: " + id + " não encontrado.");
-        }
+        endereco = toEntityUpdate(enderecoDTO, endereco);
+        endereco = enderecoRepository.save(endereco);
+        log.info("Fim do método - EnderecoServiceImpl - atualizarEndereco");
+
+        return enderecoMapper.toDTO(endereco);
     }
 
     public void deletarEndereco(Long id) {
@@ -97,21 +93,12 @@ public class EnderecoServiceImpl implements EnderecoService {
         }
     }
 
-    private void updateEntityFromDTO(EnderecoDTO enderecoDTO, Endereco endereco) {
-        if (enderecoDTO.getRua() != null) {
-            endereco.setRua(enderecoDTO.getRua());
-        }
-        if (enderecoDTO.getNumero() != null) {
-            endereco.setNumero(enderecoDTO.getNumero());
-        }
-        if (enderecoDTO.getBairro() != null) {
-            endereco.setBairro(enderecoDTO.getBairro());
-        }
-        if (enderecoDTO.getCidade() != null) {
-            endereco.setCidade(enderecoDTO.getCidade());
-        }
-        if (enderecoDTO.getEstado() != null) {
-            endereco.setEstado(enderecoDTO.getEstado());
-        }
+    private Endereco toEntityUpdate(EnderecoDTO enderecoDTO, Endereco endereco) {
+        if (enderecoDTO.getRua() != null) endereco.setRua(enderecoDTO.getRua());
+        if (enderecoDTO.getNumero() != null) endereco.setNumero(enderecoDTO.getNumero());
+        if (enderecoDTO.getBairro() != null) endereco.setBairro(enderecoDTO.getBairro());
+        if (enderecoDTO.getCidade() != null) endereco.setCidade(enderecoDTO.getCidade());
+        if (enderecoDTO.getEstado() != null) endereco.setEstado(enderecoDTO.getEstado());
+        return endereco;
     }
 }
