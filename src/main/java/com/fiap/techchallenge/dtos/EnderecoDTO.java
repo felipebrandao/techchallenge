@@ -1,7 +1,7 @@
 package com.fiap.techchallenge.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import com.fiap.techchallenge.entities.Endereco;
 import com.fiap.techchallenge.enums.EstadoEnum;
 import jakarta.validation.constraints.NotBlank;
@@ -43,5 +43,13 @@ public class EnderecoDTO {
         this.bairro = endereco.getBairro();
         this.cidade = endereco.getCidade();
         this.estado = endereco.getEstado();
+    }
+
+    @JsonIgnore
+    public boolean isPeloMenosUmCampoPreenchido() {
+        return getRua() != null && !getRua().isEmpty()
+                || getBairro() != null && !getBairro().isEmpty()
+                || getCidade() != null && !getCidade().isEmpty()
+                || getEstado() != null;
     }
 }
