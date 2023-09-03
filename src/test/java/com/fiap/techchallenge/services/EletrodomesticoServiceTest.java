@@ -20,13 +20,18 @@ import static org.mockito.Mockito.when;
 @ExtendWith(SpringExtension.class)
 class EletrodomesticoServiceTest {
 
-    @InjectMocks
-    private EletrodomesticoService eletrodomesticoService = new EletrodomesticoServiceImpl();
     @Spy
     private EletrodomesticoMapper eletrodomesticoMapper = Mappers.getMapper(EletrodomesticoMapper.class);
 
     @Mock
     private EletrodomesticoRepository eletrodomesticoRepository;
+
+    @InjectMocks
+    private EletrodomesticoService eletrodomesticoService = new EletrodomesticoServiceImpl(
+            eletrodomesticoRepository,
+            eletrodomesticoMapper
+    );
+
 
     private EletrodomesticoDTO obterEletrodomesticoDTO() {
         EletrodomesticoDTO eletrodomesticoDTO = new EletrodomesticoDTO();

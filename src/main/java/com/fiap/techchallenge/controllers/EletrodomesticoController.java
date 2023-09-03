@@ -62,9 +62,12 @@ public class EletrodomesticoController {
             @RequestParam(required = false) Double potencia) {
         log.info("Iniciando a pesquisa de eletrodomésticos.");
 
-        List<EletrodomesticoDTO> eletrodomesticos = eletrodomesticoService.pesquisarEletrodomesticos(
-                nome, modelo, potencia
-        );
+        EletrodomesticoDTO dto = new EletrodomesticoDTO();
+        dto.setNome(nome);
+        dto.setModelo(modelo);
+        dto.setPotencia(potencia);
+
+        List<EletrodomesticoDTO> eletrodomesticos = eletrodomesticoService.pesquisarEletrodomesticos(dto);
 
         log.info("Pesquisa de eletrodomésticos concluída.");
         return ResponseEntity.status(HttpStatus.OK).body(eletrodomesticos);

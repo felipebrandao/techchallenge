@@ -13,8 +13,5 @@ public interface EletrodomesticoService {
 
     EletrodomesticoDTO getEletrodomesticoById(Long id);
 
-    List<EletrodomesticoDTO> pesquisarEletrodomesticos(
-            String nome,
-            String modelo,
-            Double potencia);
+    List<EletrodomesticoDTO> pesquisarEletrodomesticos(EletrodomesticoDTO dto);
 }

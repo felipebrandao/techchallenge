@@ -75,14 +75,14 @@ public class EletrodomesticoServiceImpl implements EletrodomesticoService {
     }
 
     @Override
-    public List<EletrodomesticoDTO> pesquisarEletrodomesticos(
-            String nome,
-            String modelo,
-            Double potencia) {
+    public List<EletrodomesticoDTO> pesquisarEletrodomesticos(EletrodomesticoDTO dto) {
         log.info("Iniciando a pesquisa de eletrodomésticos.");
 
-        List<Eletrodomestico> eletrodomesticos = eletrodomesticoRepository.pesquisarEletrodomesticos(
-                nome, modelo, potencia);
+        if (isTodosCamposNulos(dto))
+            throw new EletrodomesticoCamposNaoPreenchidosException("Pelo menos um campo deve estar preenchido para realizar a pesquisa.");
+
+        List<Eletrodomestico> eletrodomesticos = eletrodomesticoRepository.findByNomeOrModeloOrPotencia(
+                dto.getNome(), dto.getModelo(), dto.getPotencia());
 
         log.info("Pesquisa de eletrodomésticos concluída.");
         return eletrodomesticoMapper.toDTOList(eletrodomesticos);
@@ -92,6 +92,12 @@ public class EletrodomesticoServiceImpl implements EletrodomesticoService {
         return eletrodomesticoDTO.getNome() != null && eletrodomesticoDTO.getNome().isEmpty()
                 || eletrodomesticoDTO.getModelo() != null && eletrodomesticoDTO.getModelo().isEmpty()
                 || eletrodomesticoDTO.getPotencia() != null;
+    }
+
+    private boolean isTodosCamposNulos(EletrodomesticoDTO eletrodomesticoDTO) {
+        return eletrodomesticoDTO.getNome() == null &&
+                eletrodomesticoDTO.getModelo() == null &&
+                eletrodomesticoDTO.getPotencia() == null;
     }
 
     private Eletrodomestico toEntityUpdate(EletrodomesticoDTO eletrodomesticoDTO, Eletrodomestico eletrodomestico) {
