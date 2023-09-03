@@ -1,10 +1,11 @@
 package com.fiap.techchallenge.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import com.fiap.techchallenge.entities.Endereco;
 import com.fiap.techchallenge.enums.EstadoEnum;
 import jakarta.validation.constraints.NotBlank;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,6 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
 public class EnderecoDTO {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
@@ -41,5 +43,13 @@ public class EnderecoDTO {
         this.bairro = endereco.getBairro();
         this.cidade = endereco.getCidade();
         this.estado = endereco.getEstado();
+    }
+
+    @JsonIgnore
+    public boolean isPeloMenosUmCampoPreenchido() {
+        return getRua() != null && !getRua().isEmpty()
+                || getBairro() != null && !getBairro().isEmpty()
+                || getCidade() != null && !getCidade().isEmpty()
+                || getEstado() != null;
     }
 }
