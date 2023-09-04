@@ -17,12 +17,14 @@ public interface EnderecoRepository extends JpaRepository<Endereco, Long> {
                                              @Param("bairro") String bairro,
                                              @Param("cidade") String cidade);
 
-    @Query("SELECT e FROM Endereco e WHERE e.rua = :rua " +
+    @Query("SELECT CASE WHEN COUNT(e) > 0 THEN true ELSE false END  " +
+            "FROM Endereco e " +
+            "WHERE e.rua = :rua " +
             "AND e.numero = :numero " +
             "AND e.bairro = :bairro " +
             "AND e.cidade = :cidade " +
             "AND e.estado = :estado")
-    List<Endereco> findByAllFields(
+    boolean isExisteEnderecoCadastrado(
             String rua,
             Integer numero,
             String bairro,
