@@ -31,7 +31,7 @@ public class EletrodomesticoServiceImpl implements EletrodomesticoService {
     }
 
     @Override
-    public EletrodomesticoDTO cadastrarEndereco(EletrodomesticoDTO eletrodomesticoDTO) {
+    public EletrodomesticoDTO cadastrarEletrodomestico(EletrodomesticoDTO eletrodomesticoDTO) {
         log.info("Inicio do metódo - EletrodomesticoServiceImpl - cadastrarEndereco");
         Eletrodomestico eletrodomestico = eletrodomesticoRepository.save(eletrodomesticoMapper.toEntity(eletrodomesticoDTO));
         log.info("Fim da requisição - EletrodomesticoServiceImpl - cadastrarEndereco");
