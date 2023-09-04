@@ -2,8 +2,6 @@ package com.fiap.techchallenge.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fiap.techchallenge.dtos.EnderecoDTO;
-import com.fiap.techchallenge.enums.EstadoEnum;
-import com.fiap.techchallenge.exceptions.EnderecoNaoEncontradoException;
 import com.fiap.techchallenge.services.EnderecoService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,19 +10,17 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import static com.fiap.techchallenge.enums.EstadoEnum.SP;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -33,79 +29,95 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(EnderecoController.class)
 class EnderecoControllerTest {
 
+    private static final String ENDERECO_ENDPOINT = "/endereco";
+    private static final Long EXISTING_ID = 1L;
+
     @Autowired
     MockMvc mockMvc;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @MockBean
     EnderecoService enderecoService;
 
-//    @Test
-//    void obterCadastroSucesso() throws Exception {
-//        List<EnderecoDTO> enderecos = new ArrayList<>();
-//        enderecos.add(new EnderecoDTO());
-//        enderecos.add(new EnderecoDTO());
-//
-//        when(enderecoService.obterEnderecos()).thenReturn(enderecos);
-//
-//        ResultActions result = mockMvc.perform(get("/endereco"))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.length()").value(enderecos.size()));
-//
-//        result.andExpect(status().isOk());
-//
-//        verify(enderecoService, times(1)).obterEnderecos();
-//    }
+    @Test
+    void deveRetornarEnderecoPeloId() throws Exception {
+        EnderecoDTO enderecoDTO = createEnderecoDTO();
+
+        when(enderecoService.getEnderecoById(EXISTING_ID)).thenReturn(enderecoDTO);
+
+        ResultActions result = mockMvc.perform(get(ENDERECO_ENDPOINT + "/{id}", EXISTING_ID));
+
+        result.andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(enderecoDTO)));
+    }
 
     @Test
-    void cadastroSucesso() throws Exception {
-        when(enderecoService.cadastrarEndereco(any())).thenReturn(obterEnderecoDTO());
+    void deveCadastrarEnderecoComSucesso() throws Exception {
+        EnderecoDTO enderecoDTO = createEnderecoDTO();
 
-        ObjectMapper objectMapper = new ObjectMapper();
+        when(enderecoService.cadastrarEndereco(any())).thenReturn(enderecoDTO);
 
-        ResultActions result = mockMvc.perform(post("/endereco")
+        ResultActions result = mockMvc.perform(post(ENDERECO_ENDPOINT)
                 .contentType(APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(obterEnderecoDTO())));
+                .content(objectMapper.writeValueAsString(enderecoDTO)));
 
-        result.andExpect(status().isCreated());
+        result.andExpect(status().isCreated())
+                .andExpect(content().json(objectMapper.writeValueAsString(enderecoDTO)));
     }
 
     @Test
-    public void deletarCadastroSucesso() throws Exception {
-        Long enderecoId = 1L;
-
-        doNothing().when(enderecoService).deletarEndereco(eq(enderecoId));
-
-        ResultActions result = mockMvc.perform(delete("/endereco/{id}", enderecoId))
-                .andExpect(status().isOk())
-                .andExpect(content().string("Endereço deletado com sucesso"));
-
-        result.andExpect(status().isOk());
-
-        verify(enderecoService, times(1)).deletarEndereco(eq(enderecoId));
-    }
-
-    @Test
-    public void deveEstourarExcecaoEnderecoNaoEncontradoAoDeletar() throws Exception {
-        Long enderecoId = 1L;
-
-        doThrow(EnderecoNaoEncontradoException.class).when(enderecoService).deletarEndereco(eq(enderecoId));
-
-        ResultActions result = mockMvc.perform(delete("/endereco/{id}", enderecoId))
-                .andExpect(status().isNotFound());
-
-        result.andExpect(status().isNotFound());
-
-        verify(enderecoService, times(1)).deletarEndereco(eq(enderecoId));
-    }
-
-    private EnderecoDTO obterEnderecoDTO() {
+    void deveRetornarBadRequestAoCadastrarEnderecoComDadosInvalidos() throws Exception {
         EnderecoDTO enderecoDTO = new EnderecoDTO();
 
+        ResultActions result = mockMvc.perform(post(ENDERECO_ENDPOINT)
+                .contentType(APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(enderecoDTO)));
+
+        result.andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void deveAtualizarEnderecoComSucesso() throws Exception {
+        EnderecoDTO enderecoDTO = createEnderecoDTO();
+        when(enderecoService.atualizarEndereco(eq(EXISTING_ID), any())).thenReturn(enderecoDTO);
+
+        ResultActions result = mockMvc.perform(put(ENDERECO_ENDPOINT + "/{id}", EXISTING_ID)
+                .contentType(APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(enderecoDTO)));
+
+        result.andExpect(status().isOk())
+                .andExpect(content().contentType(APPLICATION_JSON))
+                .andExpect(jsonPath("$.rua").value(enderecoDTO.getRua()))
+                .andExpect(jsonPath("$.numero").value(enderecoDTO.getNumero()))
+                .andExpect(jsonPath("$.bairro").value(enderecoDTO.getBairro()))
+                .andExpect(jsonPath("$.cidade").value(enderecoDTO.getCidade()))
+                .andExpect(jsonPath("$.estado").value(enderecoDTO.getEstado().name()));
+
+        assertThat(enderecoDTO.getRua()).isEqualTo("Rua Carlos Alberto Trevisan");
+        assertThat(enderecoDTO.getNumero()).isEqualTo(400);
+        assertThat(enderecoDTO.getBairro()).isEqualTo("Bela Vista");
+        assertThat(enderecoDTO.getCidade()).isEqualTo("São Paulo");
+        assertThat(enderecoDTO.getEstado()).isEqualTo(SP);
+    }
+
+    @Test
+    void deveDeletarEnderecoComSucesso() throws Exception {
+        ResultActions result = mockMvc.perform(delete(ENDERECO_ENDPOINT + "/{id}", EXISTING_ID));
+
+        result.andExpect(status().isNoContent());
+
+        verify(enderecoService, times(1)).deletarEndereco(eq(EXISTING_ID));
+    }
+
+    private EnderecoDTO createEnderecoDTO() {
+        EnderecoDTO enderecoDTO = new EnderecoDTO();
         enderecoDTO.setRua("Rua Carlos Alberto Trevisan");
         enderecoDTO.setNumero(400);
         enderecoDTO.setBairro("Bela Vista");
         enderecoDTO.setCidade("São Paulo");
-        enderecoDTO.setEstado(EstadoEnum.SP);
+        enderecoDTO.setEstado(SP);
 
         return enderecoDTO;
     }
