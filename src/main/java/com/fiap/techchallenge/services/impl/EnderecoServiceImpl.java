@@ -20,11 +20,15 @@ import java.util.stream.Collectors;
 @Service
 public class EnderecoServiceImpl implements EnderecoService {
 
-    @Autowired
     private EnderecoRepository enderecoRepository;
 
-    @Autowired
     private EnderecoMapper enderecoMapper;
+
+    @Autowired
+    public EnderecoServiceImpl(EnderecoRepository enderecoRepository, EnderecoMapper enderecoMapper) {
+        this.enderecoRepository = enderecoRepository;
+        this.enderecoMapper = enderecoMapper;
+    }
 
 
     public EnderecoDTO getEnderecoById(Long id) {
