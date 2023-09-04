@@ -17,7 +17,7 @@ public interface EnderecoRepository extends JpaRepository<Endereco, Long> {
                                              @Param("bairro") String bairro,
                                              @Param("cidade") String cidade);
 
-    @Query("SELECT CASE WHEN COUNT(e) > 0 THEN true ELSE false END  " +
+    @Query("SELECT CASE WHEN COUNT(e) > 0 THEN true ELSE false END " +
             "FROM Endereco e " +
             "WHERE e.rua = :rua " +
             "AND e.numero = :numero " +

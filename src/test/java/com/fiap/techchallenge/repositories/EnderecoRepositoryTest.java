@@ -1,9 +1,11 @@
 package com.fiap.techchallenge.repositories;
 
 import com.fiap.techchallenge.entities.Endereco;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,7 +19,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class EnderecoRepositoryTest {
 
     @Autowired
+    private TestEntityManager entityManager;
+
+    @Autowired
     private EnderecoRepository enderecoRepository;
+
+    @BeforeEach
+    public void setUp() {
+        entityManager.clear();
+    }
 
     @Test
     void testBuscarEnderecosPorFiltros() {
