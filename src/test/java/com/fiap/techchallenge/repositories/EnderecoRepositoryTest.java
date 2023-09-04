@@ -12,6 +12,7 @@ import static com.fiap.techchallenge.enums.EstadoEnum.SP;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+
 @DataJpaTest
 class EnderecoRepositoryTest {
 
@@ -20,6 +21,7 @@ class EnderecoRepositoryTest {
 
     @Test
     void testBuscarEnderecosPorFiltros() {
+
         Endereco endereco1 = criarEndereco("Rua Teste 1", "Bairro 1", "Cidade 1");
         Endereco endereco2 = criarEndereco("Rua Teste 2", "Bairro 2", "Cidade 2");
         Endereco endereco3 = criarEndereco("Rua Outra", "Bairro 1", "Cidade 3");
@@ -36,6 +38,7 @@ class EnderecoRepositoryTest {
 
     @Test
     public void testIsExisteEnderecoCadastrado() {
+
         Endereco endereco = new Endereco();
         endereco.setRua("Rua Teste");
         endereco.setBairro("Bairro Teste");
@@ -44,6 +47,7 @@ class EnderecoRepositoryTest {
         endereco.setNumero(123);
 
         enderecoRepository.save(endereco);
+
 
         boolean result = enderecoRepository.isExisteEnderecoCadastrado(
                 "Rua Teste",
