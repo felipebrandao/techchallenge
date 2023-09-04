@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 
 import java.util.List;
 
+import static org.springframework.http.HttpStatus.CREATED;
+
 @Slf4j
 @RestController
 @RequestMapping("/endereco")
@@ -52,7 +54,7 @@ public class EnderecoController {
     public ResponseEntity<EnderecoDTO> cadastrarEndereco(@Valid @RequestBody EnderecoDTO enderecoDTO) {
         log.info("Cadastrando novo endereço: {}", enderecoDTO);
         EnderecoDTO enderecoCadastrado = enderecoService.cadastrarEndereco(enderecoDTO);
-        return ResponseEntity.ok(enderecoCadastrado);
+        return ResponseEntity.status(CREATED).body(enderecoCadastrado);
     }
 
     @PutMapping("/{id}")
