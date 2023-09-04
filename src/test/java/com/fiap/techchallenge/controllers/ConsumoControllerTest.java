@@ -1,11 +1,8 @@
 package com.fiap.techchallenge.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fiap.techchallenge.dtos.ConsumoDTO;
 import com.fiap.techchallenge.services.ConsumoService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,12 +27,6 @@ class ConsumoControllerTest {
 
     @MockBean
     private ConsumoService consumoService;
-
-    @BeforeEach
-    public void setUp() {
-        objectMapper.registerModule(new JavaTimeModule());
-        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-    }
 
     private ConsumoDTO obterConsumoDTO() {
         ConsumoDTO consumoDTO = new ConsumoDTO();
