@@ -8,8 +8,6 @@ import com.fiap.techchallenge.mappers.EletrodomesticoMapper;
 import com.fiap.techchallenge.repositories.EletrodomesticoRepository;
 import com.fiap.techchallenge.services.EletrodomesticoService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

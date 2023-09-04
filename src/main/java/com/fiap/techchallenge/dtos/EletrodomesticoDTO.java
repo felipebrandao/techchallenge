@@ -1,7 +1,6 @@
 package com.fiap.techchallenge.dtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fiap.techchallenge.entities.Eletrodomestico;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Getter;
