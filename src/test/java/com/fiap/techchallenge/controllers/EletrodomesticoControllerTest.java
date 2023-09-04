@@ -39,7 +39,7 @@ class EletrodomesticoControllerTest {
 
     @Test
     void testRegistrarEletrodomestico() throws Exception {
-        when(eletrodomesticoService.cadastrarEndereco(Mockito.any())).thenReturn(obterEletrodomesticoDTO());
+        when(eletrodomesticoService.cadastrarEletrodomestico(Mockito.any())).thenReturn(obterEletrodomesticoDTO());
 
         ObjectMapper objectMapper = new ObjectMapper();
 

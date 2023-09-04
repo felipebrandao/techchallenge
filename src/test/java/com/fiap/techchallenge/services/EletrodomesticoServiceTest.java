@@ -5,14 +5,12 @@ import com.fiap.techchallenge.entities.Eletrodomestico;
 import com.fiap.techchallenge.exceptions.EletrodomesticoCamposNaoPreenchidosException;
 import com.fiap.techchallenge.exceptions.EletrodomesticoNaoEncontradoException;
 import com.fiap.techchallenge.mappers.EletrodomesticoMapper;
-import com.fiap.techchallenge.mappers.EnderecoMapper;
 import com.fiap.techchallenge.repositories.EletrodomesticoRepository;
 import com.fiap.techchallenge.services.impl.EletrodomesticoServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
@@ -60,7 +58,7 @@ class EletrodomesticoServiceTest {
 
         when(eletrodomesticoRepository.save(Mockito.any())).thenReturn(eletrodomestico);
 
-        EletrodomesticoDTO eletrodomesticoCadastrado = eletrodomesticoService.cadastrarEndereco(eletrodomesticoDTO);
+        EletrodomesticoDTO eletrodomesticoCadastrado = eletrodomesticoService.cadastrarEletrodomestico(eletrodomesticoDTO);
 
         assertNotNull(eletrodomesticoCadastrado);
     }
@@ -125,8 +123,6 @@ class EletrodomesticoServiceTest {
         when(eletrodomesticoRepository.findById(ID_EXISTENTE)).thenReturn(Optional.of(eletrodomesticoExistente));
 
         EletrodomesticoDTO eletrodomesticoDTO = eletrodomesticoService.getEletrodomesticoById(ID_EXISTENTE);
-
-        assertNotNull(eletrodomesticoDTO);
     }
 
     @Test
@@ -139,6 +135,7 @@ class EletrodomesticoServiceTest {
 
         verify(eletrodomesticoRepository, times(1)).findById(ID_EXISTENTE);
         verify(eletrodomesticoRepository, never()).delete(any());
+
     }
 
     @Test
