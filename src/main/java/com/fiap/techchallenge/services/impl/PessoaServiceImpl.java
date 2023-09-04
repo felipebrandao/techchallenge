@@ -19,9 +19,9 @@ import java.util.stream.Collectors;
 @Service
 public class PessoaServiceImpl implements PessoaService {
 
-    private PessoaRepository pessoaRepository;
+    private final PessoaRepository pessoaRepository;
 
-    private PessoaMapper pessoaMapper;
+    private final PessoaMapper pessoaMapper;
 
     @Autowired
     public PessoaServiceImpl(PessoaRepository pessoaRepository, PessoaMapper pessoaMapper) {

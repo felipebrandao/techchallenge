@@ -2,6 +2,7 @@ package com.fiap.techchallenge.config;
 
 import com.fiap.techchallenge.dtos.ErroDeFormularioDTO;
 import com.fiap.techchallenge.exceptions.TechChallengeException;
+import com.fiap.techchallenge.exceptions.TechChallengeNaoEncotradoException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -31,6 +32,13 @@ public class ExceptionHandlerConfig {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
+
+    @ExceptionHandler(TechChallengeNaoEncotradoException.class)
+    public ResponseEntity<ErrorDTO> handleTechChallengeException(TechChallengeNaoEncotradoException ex) {
+        log.error("Erro na requisição, erro: ", ex);
+        ErrorDTO error = new ErrorDTO(Instant.now(), HttpStatus.NOT_FOUND.value(), ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<List<ErroDeFormularioDTO>> handleException(MethodArgumentNotValidException ex) {

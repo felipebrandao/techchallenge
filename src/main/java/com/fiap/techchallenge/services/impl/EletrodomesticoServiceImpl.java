@@ -17,9 +17,9 @@ import java.util.List;
 @Service
 public class EletrodomesticoServiceImpl implements EletrodomesticoService {
 
-    private EletrodomesticoMapper eletrodomesticoMapper;
+    private final EletrodomesticoMapper eletrodomesticoMapper;
 
-    private EletrodomesticoRepository eletrodomesticoRepository;
+    private final EletrodomesticoRepository eletrodomesticoRepository;
 
     @Autowired
     public EletrodomesticoServiceImpl(EletrodomesticoRepository eletrodomesticoRepository,
@@ -29,7 +29,7 @@ public class EletrodomesticoServiceImpl implements EletrodomesticoService {
     }
 
     @Override
-    public EletrodomesticoDTO cadastrarEndereco(EletrodomesticoDTO eletrodomesticoDTO) {
+    public EletrodomesticoDTO cadastrarEletrodomestico(EletrodomesticoDTO eletrodomesticoDTO) {
         log.info("Inicio do metódo - EletrodomesticoServiceImpl - cadastrarEndereco");
         Eletrodomestico eletrodomestico = eletrodomesticoRepository.save(eletrodomesticoMapper.toEntity(eletrodomesticoDTO));
         log.info("Fim da requisição - EletrodomesticoServiceImpl - cadastrarEndereco");
@@ -40,16 +40,16 @@ public class EletrodomesticoServiceImpl implements EletrodomesticoService {
     public EletrodomesticoDTO atualizarEletrodomestico(Long id, EletrodomesticoDTO eletrodomesticoDTO) {
         log.info("Início do método - EletrodomesticoServiceImpl - atualizarEletrodomestico");
 
-        if (!isPeloMenosUmCampoPreenchido(eletrodomesticoDTO)) throw new EletrodomesticoCamposNaoPreenchidosException("Pelo menos um campo deve estar preenchido.");
+        if (!eletrodomesticoDTO.isPeloMenosUmCampoPreenchido()) throw new EletrodomesticoCamposNaoPreenchidosException("Pelo menos um campo deve estar preenchido.");
 
         Eletrodomestico eletrodomesticoEncontrado = eletrodomesticoRepository.findById(id)
                 .orElseThrow(() -> new EletrodomesticoNaoEncontradoException("Eletrodoméstico com ID " + id + " não encontrado"));
 
-        eletrodomesticoEncontrado = toEntityUpdate(eletrodomesticoDTO, eletrodomesticoEncontrado);
-        eletrodomesticoEncontrado = eletrodomesticoRepository.save(eletrodomesticoEncontrado);
+        Eletrodomestico eletrodomesticoUpdate = toEntityUpdate(eletrodomesticoDTO, eletrodomesticoEncontrado);
+        eletrodomesticoUpdate = eletrodomesticoRepository.save(eletrodomesticoUpdate);
 
         log.info("Fim do método - EletrodomesticoServiceImpl - atualizarEletrodomestico");
-        return eletrodomesticoMapper.toDTO(eletrodomesticoEncontrado);
+        return eletrodomesticoMapper.toDTO(eletrodomesticoUpdate);
     }
 
     @Override
@@ -79,12 +79,6 @@ public class EletrodomesticoServiceImpl implements EletrodomesticoService {
 
         log.info("Pesquisa de eletrodomésticos concluída.");
         return eletrodomesticoMapper.toDTOList(eletrodomesticos);
-    }
-
-    private boolean isPeloMenosUmCampoPreenchido(EletrodomesticoDTO eletrodomesticoDTO) {
-        return eletrodomesticoDTO.getNome() != null && eletrodomesticoDTO.getNome().isEmpty()
-                || eletrodomesticoDTO.getModelo() != null && eletrodomesticoDTO.getModelo().isEmpty()
-                || eletrodomesticoDTO.getPotencia() != null;
     }
 
     private Eletrodomestico toEntityUpdate(EletrodomesticoDTO eletrodomesticoDTO, Eletrodomestico eletrodomestico) {

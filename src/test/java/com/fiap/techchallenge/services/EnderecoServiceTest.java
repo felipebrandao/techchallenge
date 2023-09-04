@@ -6,10 +6,10 @@ import com.fiap.techchallenge.enums.EstadoEnum;
 import com.fiap.techchallenge.mappers.EnderecoMapper;
 import com.fiap.techchallenge.repositories.EnderecoRepository;
 import com.fiap.techchallenge.services.impl.EnderecoServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
@@ -21,14 +21,18 @@ import static org.mockito.Mockito.when;
 @ExtendWith(SpringExtension.class)
 class EnderecoServiceTest {
 
-    @InjectMocks
-    private EnderecoService enderecoService = new EnderecoServiceImpl();
+    private EnderecoService enderecoService;
 
     @Spy
     private EnderecoMapper enderecoMapper = Mappers.getMapper(EnderecoMapper.class);
 
     @Mock
     private EnderecoRepository enderecoRepository;
+
+    @BeforeEach
+    void setup() {
+        enderecoService = new EnderecoServiceImpl(enderecoRepository, enderecoMapper);
+    }
 
     private EnderecoDTO obterEnderecoDTO() {
         EnderecoDTO enderecoDTO = new EnderecoDTO();

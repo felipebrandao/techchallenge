@@ -5,7 +5,7 @@ import com.fiap.techchallenge.dtos.EletrodomesticoDTO;
 import java.util.List;
 
 public interface EletrodomesticoService {
-    EletrodomesticoDTO cadastrarEndereco(EletrodomesticoDTO eletrodomesticoDTO);
+    EletrodomesticoDTO cadastrarEletrodomestico(EletrodomesticoDTO eletrodomesticoDTO);
 
     EletrodomesticoDTO atualizarEletrodomestico(Long id, EletrodomesticoDTO eletrodomesticoDTO);
 

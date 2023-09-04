@@ -1,5 +1,6 @@
 package com.fiap.techchallenge.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -31,5 +32,12 @@ public class EletrodomesticoDTO {
         this.nome = nome;
         this.modelo = modelo;
         this.potencia = potencia;
+    }
+
+    @JsonIgnore
+    public boolean isPeloMenosUmCampoPreenchido() {
+        return getNome() != null && !getNome().isEmpty()
+                || getModelo() != null && !getModelo().isEmpty()
+                || getPotencia() != null;
     }
 }
