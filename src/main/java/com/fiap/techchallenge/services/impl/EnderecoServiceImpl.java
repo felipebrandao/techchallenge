@@ -20,9 +20,9 @@ import java.util.stream.Collectors;
 @Service
 public class EnderecoServiceImpl implements EnderecoService {
 
-    private EnderecoRepository enderecoRepository;
+    private final EnderecoRepository enderecoRepository;
 
-    private EnderecoMapper enderecoMapper;
+    private final EnderecoMapper enderecoMapper;
 
     @Autowired
     public EnderecoServiceImpl(EnderecoRepository enderecoRepository, EnderecoMapper enderecoMapper) {
@@ -69,7 +69,7 @@ public class EnderecoServiceImpl implements EnderecoService {
         Endereco endereco = enderecoRepository.findById(id)
                 .orElseThrow(() -> new EnderecoNaoEncontradoException("Endereço com este id: " + id + " não encontrado."));
 
-        endereco = toEntityUpdate(enderecoDTO, endereco);
+        toEntityUpdate(enderecoDTO, endereco);
         endereco = enderecoRepository.save(endereco);
         log.info("Fim do método - EnderecoServiceImpl - atualizarEndereco");
 
@@ -97,12 +97,11 @@ public class EnderecoServiceImpl implements EnderecoService {
         }
     }
 
-    private Endereco toEntityUpdate(EnderecoDTO enderecoDTO, Endereco endereco) {
+    private void toEntityUpdate(EnderecoDTO enderecoDTO, Endereco endereco) {
         if (enderecoDTO.getRua() != null) endereco.setRua(enderecoDTO.getRua());
         if (enderecoDTO.getNumero() != null) endereco.setNumero(enderecoDTO.getNumero());
         if (enderecoDTO.getBairro() != null) endereco.setBairro(enderecoDTO.getBairro());
         if (enderecoDTO.getCidade() != null) endereco.setCidade(enderecoDTO.getCidade());
         if (enderecoDTO.getEstado() != null) endereco.setEstado(enderecoDTO.getEstado());
-        return endereco;
     }
 }
