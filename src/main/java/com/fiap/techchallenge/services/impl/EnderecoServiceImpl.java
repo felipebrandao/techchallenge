@@ -90,9 +90,9 @@ public class EnderecoServiceImpl implements EnderecoService {
         String cidade = enderecoDTO.getCidade();
         EstadoEnum estado = enderecoDTO.getEstado();
 
-        List<Endereco> enderecos = enderecoRepository.findByAllFields(rua, numero, bairro, cidade, estado);
+        boolean existeEndereco = enderecoRepository.isExisteEnderecoCadastrado(rua, numero, bairro, cidade, estado);
 
-        if (!enderecos.isEmpty()) {
+        if (existeEndereco) {
             throw new EnderecoExistenteException("Endereço já cadastrado com esses campos.");
         }
     }

@@ -1,24 +1,37 @@
 package com.fiap.techchallenge.repositories;
 
 import com.fiap.techchallenge.entities.Endereco;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import java.util.Arrays;
 import java.util.List;
 
 import static com.fiap.techchallenge.enums.EstadoEnum.SP;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 @DataJpaTest
 class EnderecoRepositoryTest {
 
     @Autowired
+    private TestEntityManager entityManager;
+
+    @Autowired
     private EnderecoRepository enderecoRepository;
 
+    @BeforeEach
+    public void setUp() {
+        entityManager.clear();
+    }
+
     @Test
-    void deveBuscarEnderecosPorFiltros() {
+    void testBuscarEnderecosPorFiltros() {
+
         Endereco endereco1 = criarEndereco("Rua Teste 1", "Bairro 1", "Cidade 1");
         Endereco endereco2 = criarEndereco("Rua Teste 2", "Bairro 2", "Cidade 2");
         Endereco endereco3 = criarEndereco("Rua Outra", "Bairro 1", "Cidade 3");
@@ -34,7 +47,8 @@ class EnderecoRepositoryTest {
     }
 
     @Test
-    public void deveEncontrarPorTodosOsCampos() {
+    public void testIsExisteEnderecoCadastrado() {
+
         Endereco endereco = new Endereco();
         endereco.setRua("Rua Teste");
         endereco.setBairro("Bairro Teste");
@@ -44,7 +58,8 @@ class EnderecoRepositoryTest {
 
         enderecoRepository.save(endereco);
 
-        List<Endereco> result = enderecoRepository.findByAllFields(
+
+        boolean result = enderecoRepository.isExisteEnderecoCadastrado(
                 "Rua Teste",
                 123,
                 "Bairro Teste",
@@ -52,8 +67,7 @@ class EnderecoRepositoryTest {
                 SP
         );
 
-        assertEquals(1, result.size());
-        assertEquals(endereco, result.get(0));
+        assertTrue(result);
     }
 
     private Endereco criarEndereco(String rua, String bairro, String cidade) {

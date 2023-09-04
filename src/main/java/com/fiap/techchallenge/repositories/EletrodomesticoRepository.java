@@ -11,8 +11,8 @@ public interface EletrodomesticoRepository extends JpaRepository<Eletrodomestico
 
     @Query("SELECT e FROM Eletrodomestico e WHERE " +
             "(:nome IS NULL OR e.nome = :nome) AND " +
-            "(:nome IS NULL OR e.modelo = :modelo) AND " +
-            "(:nome IS NULL OR e.potencia = :potencia)")
+            "(:modelo IS NULL OR e.modelo = :modelo) AND " +
+            "(:potencia IS NULL OR e.potencia = :potencia)")
     List<Eletrodomestico> pesquisarEletrodomesticos(
             @Param("nome") String nome,
             @Param("modelo") String modelo,

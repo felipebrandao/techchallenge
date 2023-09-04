@@ -67,12 +67,7 @@ public class EnderecoController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarEndereco(@PathVariable Long id) {
         log.info("Excluindo endereço com ID: {}", id);
-        try {
-            enderecoService.deletarEndereco(id);
-            return ResponseEntity.noContent().build();
-        } catch (EnderecoNaoEncontradoException e) {
-            log.error("Endereço com ID {} não encontrado.", id);
-            return ResponseEntity.notFound().build();
-        }
+        enderecoService.deletarEndereco(id);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -1,13 +1,10 @@
 package com.fiap.techchallenge.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fiap.techchallenge.dtos.PessoaDTO;
 import com.fiap.techchallenge.enums.SexoEnum;
 import com.fiap.techchallenge.exceptions.PessoaNaoEncontradaException;
 import com.fiap.techchallenge.services.PessoaService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -38,12 +35,6 @@ class PessoaControllerTest {
 
     @MockBean
     PessoaService pessoaService;
-
-    @BeforeEach
-    public void setup() {
-        objectMapper.registerModule(new JavaTimeModule());
-        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-    }
 
     @Test
     void testCadastroSucesso() throws Exception {

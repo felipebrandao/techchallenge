@@ -9,17 +9,13 @@ import com.fiap.techchallenge.exceptions.EnderecoNaoEncontradoException;
 import com.fiap.techchallenge.mappers.EnderecoMapper;
 import com.fiap.techchallenge.repositories.EnderecoRepository;
 import com.fiap.techchallenge.services.impl.EnderecoServiceImpl;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-
 import org.mapstruct.factory.Mappers;
-
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
-
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
@@ -27,10 +23,11 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.fiap.techchallenge.enums.EstadoEnum.SP;
-import static java.util.Collections.singletonList;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
@@ -52,7 +49,7 @@ class EnderecoServiceTest {
     private static final Long ID_EXISTENTE = 1L;
 
     @Test
-    void deveObterEnderecoPorIdComSucesso() {
+    void testObterEnderecoPorIdComSucesso() {
         Endereco endereco = new Endereco("Rua Teste", 123, "Bairro Teste", "Cidade Teste", SP);
         when(enderecoRepository.findById(ID_EXISTENTE)).thenReturn(Optional.of(endereco));
 
@@ -67,14 +64,14 @@ class EnderecoServiceTest {
     }
 
     @Test
-    void deveLancarEnderecoNaoEncontradoExceptionAoObterEnderecoPorIdNaoEncontrado() {
+    void testLancarEnderecoNaoEncontradoExceptionAoObterEnderecoPorIdNaoEncontrado() {
         when(enderecoRepository.findById(ID_EXISTENTE)).thenReturn(Optional.empty());
 
         assertThrows(EnderecoNaoEncontradoException.class, () -> enderecoService.getEnderecoById(ID_EXISTENTE));
     }
 
     @Test
-    void deveBuscarEnderecosPorFiltroComSucesso() {
+    void testBuscarEnderecosPorFiltroComSucesso() {
         String rua = "Rua Teste";
         String bairro = "Bairro Teste";
         String cidade = "Cidade Teste";
@@ -95,7 +92,7 @@ class EnderecoServiceTest {
     }
 
     @Test
-    void deveLancarEnderecoNaoEncontradoExceptionAoBuscarEnderecosPorFiltroVazio() {
+    void testLancarEnderecoNaoEncontradoExceptionAoBuscarEnderecosPorFiltroVazio() {
         String rua = "Rua Teste";
         String bairro = "Bairro Teste";
         String cidade = "Cidade Teste";
@@ -106,41 +103,39 @@ class EnderecoServiceTest {
     }
 
     @Test
-    void deveCadastrarEnderecoNaoExistenteComSucesso() {
-        EnderecoDTO enderecoDTO = cadastrarEnderecoMock();
-        Endereco enderecoSalvo = enderecoMapper.toEntity(enderecoDTO);
+    void testCadastrarEnderecoEnderecoJaExiste() {
+        cadastrarEnderecoMock();
 
-        when(enderecoRepository.buscarEnderecosPorFiltros(
+        EnderecoExistenteException enderecoExistenteException = assertThrows(
+                EnderecoExistenteException.class,
+                () -> enderecoService.cadastrarEndereco(obterEnderecoDTO())
+        );
+
+        assertThat(enderecoExistenteException.getMessage())
+                .isEqualTo("Endereço já cadastrado com esses campos.");
+
+        verify(enderecoRepository, times(1)).isExisteEnderecoCadastrado(
+                Mockito.anyString(),
+                Mockito.anyInt(),
                 Mockito.anyString(),
                 Mockito.anyString(),
-                Mockito.anyString())
-        ).thenReturn(new ArrayList<>());
+                Mockito.any(EstadoEnum.class)
+        );
 
-        when(enderecoRepository.save(Mockito.any())).thenReturn(enderecoSalvo);
-
-        EnderecoDTO enderecoCadastrado = enderecoService.cadastrarEndereco(enderecoDTO);
-
-        assertNotNull(enderecoCadastrado);
-        assertEquals(enderecoDTO.getRua(), enderecoCadastrado.getRua());
-        assertEquals(enderecoDTO.getNumero(), enderecoCadastrado.getNumero());
-        assertEquals(enderecoDTO.getBairro(), enderecoCadastrado.getBairro());
-        assertEquals(enderecoDTO.getCidade(), enderecoCadastrado.getCidade());
-        assertEquals(enderecoDTO.getEstado(), enderecoCadastrado.getEstado());
+        verify(enderecoRepository, never()).save(Mockito.any());
     }
 
     @Test
-    void deveLancarEnderecoExistenteExceptionAoCadastrarEnderecoExistente() {
+    void testLancarEnderecoExistenteExceptionAoCadastrarEnderecoExistente() {
         EnderecoDTO enderecoDTOExistente = obterEnderecoDTO();
 
-        List<Endereco> enderecosExistentes = singletonList(new Endereco());
-
-        Mockito.when(enderecoRepository.findByAllFields(
+        when(enderecoRepository.isExisteEnderecoCadastrado(
                 enderecoDTOExistente.getRua(),
                 enderecoDTOExistente.getNumero(),
                 enderecoDTOExistente.getBairro(),
                 enderecoDTOExistente.getCidade(),
                 enderecoDTOExistente.getEstado()
-        )).thenReturn(enderecosExistentes);
+        )).thenReturn(true);
 
         assertThrows(EnderecoExistenteException.class, () ->
                 enderecoService.cadastrarEndereco(enderecoDTOExistente)
@@ -148,7 +143,7 @@ class EnderecoServiceTest {
     }
 
     @Test
-    void deveAtualizarEndereco() {
+    void testAtualizarEndereco() {
         EnderecoDTO enderecoDTOAtualizado = obterEnderecoDTO();
 
         Endereco enderecoExistente = new Endereco();
@@ -168,7 +163,7 @@ class EnderecoServiceTest {
     }
 
     @Test
-    void deveLancarEnderecoNaoEncontradoExceptionAoAtualizarEnderecoInexistente() {
+    void testLancarEnderecoNaoEncontradoExceptionAoAtualizarEnderecoInexistente() {
         Long idInexistente = 999L;
         EnderecoDTO enderecoDTOAtualizado = new EnderecoDTO();
         enderecoDTOAtualizado.setRua("Nova Rua");
@@ -182,7 +177,7 @@ class EnderecoServiceTest {
     }
 
     @Test
-    void deveLancarEnderecoCamposNaoPreenchidosExceptionAoAtualizarEnderecoSemCamposPreenchidos() {
+    void testDeveLancarEnderecoCamposNaoPreenchidosExceptionAoAtualizarEnderecoSemCamposPreenchidos() {
         EnderecoDTO enderecoDTOSemCampos = new EnderecoDTO();
 
         assertThrows(EnderecoCamposNaoPreenchidosException.class, () ->
@@ -191,7 +186,7 @@ class EnderecoServiceTest {
     }
 
     @Test
-    void deveDeletarEnderecoComSucesso() {
+    void testDeletarEnderecoComSucesso() {
         Endereco enderecoExistente = new Endereco();
         enderecoExistente.setId(ID_EXISTENTE);
 
@@ -203,7 +198,7 @@ class EnderecoServiceTest {
     }
 
     @Test
-    void deveLancarEnderecoNaoEncontradoExceptionAoDeletarEnderecoInexistente() {
+    void testLancarEnderecoNaoEncontradoExceptionAoDeletarEnderecoInexistente() {
         Long idInexistente = 2L;
 
         when(enderecoRepository.findById(idInexistente)).thenReturn(Optional.empty());
@@ -226,20 +221,19 @@ class EnderecoServiceTest {
         return enderecoDTO;
     }
 
-    private EnderecoDTO cadastrarEnderecoMock() {
+    private void cadastrarEnderecoMock() {
         EnderecoDTO enderecoDTO = obterEnderecoDTO();
         Endereco enderecoSalvo = enderecoMapper.toEntity(enderecoDTO);
 
-        when(enderecoRepository.findByAllFields(
+        when(enderecoRepository.isExisteEnderecoCadastrado(
                 Mockito.anyString(),
                 Mockito.anyInt(),
                 Mockito.anyString(),
                 Mockito.anyString(),
                 Mockito.any(EstadoEnum.class)
-        )).thenReturn(List.of());
+        )).thenReturn(true);
 
         when(enderecoRepository.save(Mockito.any())).thenReturn(enderecoSalvo);
 
-        return enderecoDTO;
     }
 }
