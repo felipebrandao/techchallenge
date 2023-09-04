@@ -1,27 +1,24 @@
 package com.fiap.techchallenge.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fiap.techchallenge.dtos.EnderecoDTO;
-import com.fiap.techchallenge.enums.EstadoEnum;
 import com.fiap.techchallenge.exceptions.EnderecoNaoEncontradoException;
 import com.fiap.techchallenge.services.EnderecoService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static com.fiap.techchallenge.enums.EstadoEnum.SP;
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -42,16 +39,10 @@ class EnderecoControllerTest {
     @MockBean
     EnderecoService enderecoService;
 
-    @BeforeEach
-    public void setup() {
-        objectMapper.registerModule(new JavaTimeModule());
-        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-    }
-
     @Test
     void testGetEnderecoById() throws Exception {
         Long id = 1L;
-        EnderecoDTO enderecoDTO = obterEnderecoDTO();
+        EnderecoDTO enderecoDTO = createEnderecoDTO();
 
         when(enderecoService.getEnderecoById(id)).thenReturn(enderecoDTO);
 
@@ -62,11 +53,11 @@ class EnderecoControllerTest {
 
     @Test
     void testCadastroEnderecoSucesso() throws Exception {
-        EnderecoDTO enderecoDTO = obterEnderecoDTO();
-        when(enderecoService.cadastrarEndereco(Mockito.any())).thenReturn(enderecoDTO);
+        EnderecoDTO enderecoDTO = createEnderecoDTO();
+        when(enderecoService.cadastrarEndereco(any())).thenReturn(enderecoDTO);
 
         ResultActions result = mockMvc.perform(post("/endereco")
-                .contentType(MediaType.APPLICATION_JSON)
+                .contentType(APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(enderecoDTO)));
 
         result.andExpect(status().isCreated())
@@ -75,11 +66,11 @@ class EnderecoControllerTest {
 
     @Test
     void testCadastroEnderecoFalha() throws Exception {
-        when(enderecoService.cadastrarEndereco(Mockito.any())).thenThrow(new EnderecoNaoEncontradoException("teste"));
+        when(enderecoService.cadastrarEndereco(any())).thenThrow(new EnderecoNaoEncontradoException("teste"));
 
-        EnderecoDTO enderecoDTO = obterEnderecoDTO();
+        EnderecoDTO enderecoDTO = createEnderecoDTO();
         ResultActions result = mockMvc.perform(post("/endereco")
-                .contentType(MediaType.APPLICATION_JSON)
+                .contentType(APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(enderecoDTO)));
 
         result.andExpect(status().isBadRequest());
@@ -88,25 +79,26 @@ class EnderecoControllerTest {
     @Test
     void testAtualizarEnderecoSucesso() throws Exception {
         Long id = 1L;
-        EnderecoDTO enderecoDTO = obterEnderecoDTO();
+        EnderecoDTO enderecoDTO = createEnderecoDTO();
 
-        when(enderecoService.atualizarEndereco(id, enderecoDTO)).thenReturn(enderecoDTO);
+        when(enderecoService.atualizarEndereco(eq(id), any())).thenReturn(enderecoDTO);
 
         mockMvc.perform(put("/endereco/{id}", id)
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(enderecoDTO)))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentType(APPLICATION_JSON))
                 .andExpect(jsonPath("$.rua").value(enderecoDTO.getRua()))
                 .andExpect(jsonPath("$.numero").value(enderecoDTO.getNumero()))
                 .andExpect(jsonPath("$.bairro").value(enderecoDTO.getBairro()))
                 .andExpect(jsonPath("$.cidade").value(enderecoDTO.getCidade()))
                 .andExpect(jsonPath("$.estado").value(enderecoDTO.getEstado().name()));
-        assertThat(enderecoDTO.getRua()).isEqualTo("Rua Carlos Alberto Trevisan");
-        assertThat(enderecoDTO.getNumero()).isEqualTo(400);
-        assertThat(enderecoDTO.getBairro()).isEqualTo("Bela Vista");
-        assertThat(enderecoDTO.getCidade()).isEqualTo("São Paulo");
-        assertThat(enderecoDTO.getEstado()).isEqualTo(EstadoEnum.SP);
+
+        assertEquals("Rua Carlos Alberto Trevisan", enderecoDTO.getRua());
+        assertEquals(400, enderecoDTO.getNumero());
+        assertEquals("Bela Vista", enderecoDTO.getBairro());
+        assertEquals("São Paulo", enderecoDTO.getCidade());
+        assertEquals(SP, enderecoDTO.getEstado());
     }
 
     @Test
@@ -116,10 +108,10 @@ class EnderecoControllerTest {
         mockMvc.perform(delete("/endereco/{id}", idExistente))
                 .andExpect(status().isNoContent());
 
-        verify(enderecoService, times(1)).deletarEndereco(idExistente);
+        verify(enderecoService, times(1)).deletarEndereco(eq(idExistente));
     }
 
-    private EnderecoDTO obterEnderecoDTO() {
+    private EnderecoDTO createEnderecoDTO() {
         EnderecoDTO enderecoDTO = new EnderecoDTO();
         enderecoDTO.setRua("Rua Carlos Alberto Trevisan");
         enderecoDTO.setNumero(400);
