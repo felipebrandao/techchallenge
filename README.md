@@ -26,8 +26,8 @@ arquivo [TechChallenge.postman_collection.json](doc/TechChallenge.postman_collec
 
 **Passo 1:** Abra o Postman
 
-Abra o Postman na sua máquina. Certifique-se de que você está logado na sua conta ou crie uma conta gratuita se ainda
-não tiver uma.
+Abra o [Postman](https://www.postman.com/) na sua máquina. Certifique-se de que você está logado na sua conta ou crie
+uma conta gratuita se ainda não tiver uma.
 
 **Passo 2:** Importe o Arquivo JSON
 
