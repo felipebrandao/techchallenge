@@ -6,10 +6,10 @@
 - **Framework:** [Spring Boot](https://spring.io/projects/spring-boot)
 - **JPA (Java Persistence API)**
 - **Banco de Dados:** H2
-
 - **Linguagem:** Java 17
 - **Controle de Versão:** [Git](https://git-scm.com/)
 - **Plataforma de Hospedagem:** [GitHub](https://github.com/)
+- **Postman:** [Postman](https://www.postman.com/)
 
 ## Desafios Encontrados:
 
