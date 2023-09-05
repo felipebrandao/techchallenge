@@ -20,7 +20,7 @@ codificação.
 ## Documentação da API:
 
 A documentação da API está disponível no
-arquivo [TechChallenge.postman_collection.json](TechChallenge.postman_collection(1).json).
+arquivo [TechChallenge.postman_collection.json](doc/TechChallenge.postman_collection(1).json).
 
 **Passo a passo para importar a documentação da API no Postman:**
 
