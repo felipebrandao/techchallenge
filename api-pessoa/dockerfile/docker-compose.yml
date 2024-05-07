@@ -1,0 +1,19 @@
+version: '3.5'
+
+services:
+
+  api-pessoa:
+    image: postgres:latest
+    container_name: api-pessoa
+    environment:
+      POSTGRES_DB: "api-pessoa"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+    volumes:
+      - api-pessoa:/var/lib/postgresql/data
+    ports:
+      - "5436:5432"
+    restart: unless-stopped
+
+volumes:
+  api-pessoa:

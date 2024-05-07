@@ -1,0 +1,19 @@
+version: '3.5'
+
+services:
+
+  api-morador:
+    image: postgres:latest
+    container_name: api-morador
+    environment:
+      POSTGRES_DB: "api-morador"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+    volumes:
+      - api-morador:/var/lib/postgresql/data
+    ports:
+      - "5435:5432"
+    restart: unless-stopped
+
+volumes:
+  api-morador:

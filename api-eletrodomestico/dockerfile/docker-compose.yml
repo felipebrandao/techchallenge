@@ -1,0 +1,19 @@
+version: '3.5'
+
+services:
+
+  api-eletrodomestico:
+    image: postgres:latest
+    container_name: api-eletrodomestico
+    environment:
+      POSTGRES_DB: "api-eletrodomestico"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+    volumes:
+      - api-eletrodomestico:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    restart: unless-stopped
+
+volumes:
+  api-eletrodomestico:

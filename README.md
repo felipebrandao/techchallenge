@@ -1,46 +1,67 @@
-# Projeto: Tech Challenge
+# Projeto: Tech Challenge - APIs de Cadastro e Gestão de Dados de Consumo de Energia
 
-## Ferramentas Utilizadas:
+## Descrição do Projeto
+Este projeto faz parte do Tech Challenge e tem como objetivo desenvolver APIs para cadastro e gestão de dados de consumo de energia. As APIs são responsáveis por cadastrar endereços, pessoas e eletrodomésticos, fornecendo os dados necessários para o cálculo do consumo mensal de energia.
 
-- **IDE:** [IntelliJ IDEA](https://www.jetbrains.com/idea/)
-- **Framework:** [Spring Boot](https://spring.io/projects/spring-boot)
-- **JPA (Java Persistence API)**
-- **Banco de Dados:** H2
+## Funcionalidades
+- API de Gestão de Endereços
+- API de Gestão de Pessoas
+- API de Gestão de Eletrodomésticos
+- API de Gestão de Moradores
+- API de Gestão de Consumo
+
+## Tecnologias Utilizadas
 - **Linguagem:** Java 17
-- **Controle de Versão:** [Git](https://git-scm.com/)
-- **Plataforma de Hospedagem:** [GitHub](https://github.com/)
-- **Postman:** [Postman](https://www.postman.com/)
-
-## Desafios Encontrados:
-
-Nesta segunda etapa do projeto Tech Challenge, enfrentamos alguns desafios. Coordenar um horário que funcionasse para
-todos e padronizar o projeto foram um pouco desafiadores, uma vez que cada membro da equipe possui seu próprio estilo de
-codificação.
+- **Framework/API:** 
+  - [Spring Boot](https://spring.io/projects/spring-boot)
+  - [Spring Data JPA](https://spring.io/projects/spring-data-jpa)
+  - [Spring Web](https://spring.io/projects/spring-web)
+  - [Spring Feign](https://spring.io/projects/spring-cloud-openfeign)
+  - [Lombok](https://projectlombok.org/)
+  - [MapStruct](https://mapstruct.org/)
+  - [Postman](https://www.postman.com/)
+  - [Log4j2](https://logging.apache.org/log4j/2.x/)
+- **Banco de Dados:** [Postgresql](https://www.postgresql.org/)
+- **Ferramentas de desenvolvimento:**
+  - **IDE:** [IntelliJ IDEA](https://www.jetbrains.com/idea/)
+  - **Controle de Versão:** [Git](https://git-scm.com/)
+  - **Plataforma de Hospedagem:** [GitHub](https://github.com/)
+  - **Documentação:** [Swagger](https://swagger.io/)
+  - **Gerenciador de Dependências:** [Maven](https://maven.apache.org/)
+  - **Containerização:** [Docker](https://www.docker.com/)
 
 ## Documentação da API:
 
-A documentação da API está disponível no
-arquivo [TechChallenge.postman_collection.json](doc/TechChallenge.postman_collection(1).json).
+Cada microsserviço possui um Swagger integrado para facilitar o acesso à documentação gerada.
 
-**Passo a passo para importar a documentação da API no Postman:**
+## Como Executar o Projeto
+1. Clone este repositório.
+2. Instale as dependências necessárias.
+3. Configure o ambiente de desenvolvimento.
+4. Execute o servidor local.
+5. Acesse as APIs através do endpoint correspondente.
 
-**Passo 1:** Abra o Postman
 
-Abra o [Postman](https://www.postman.com/) na sua máquina. Certifique-se de que você está logado na sua conta ou crie
-uma conta gratuita se ainda não tiver uma.
+## Executando o Projeto Localmente
 
-**Passo 2:** Importe o Arquivo JSON
+Para executar o projeto localmente usando Docker Compose, siga estas etapas:
 
-Clique no botão "Import" (Importar) localizado no canto superior esquerdo do aplicativo.
+1. Clone este repositório em sua máquina local:
+    ```
+    git clone https://github.com/felipebrandao/techchallenge.git
+    ```
 
-**Passo 3:** Selecione a Guia "File"
+2. Navegue até o diretório do projeto:
 
-Na janela de importação, selecione a guia "File" (Arquivo).
+3. Certifique-se de ter o Docker e o Docker Compose instalados em sua máquina. Se não tiver, siga as instruções de instalação [aqui](https://docs.docker.com/get-docker/).
 
-**Passo 4:** Carregue o Arquivo JSON
+4. Execute o seguinte comando para iniciar todos os serviços necessários, incluindo o banco de dados, usando Docker Compose:
+    ```
+    docker-compose up
+    ```
 
-Clique no botão "Upload Files" (Carregar Arquivos) e navegue até onde o arquivo TechChallenge.postman_collection.json
-está localizado no seu computador. Selecione esse arquivo e clique em "Open" (Abrir).
+5. Após iniciar todos os serviços, você pode acessar a documentação da API e começar a interagir com os endpoints.
 
-Agora que você importou com sucesso a documentação da API no Postman, está pronto para realizar as solicitações
-necessárias.
+
+## Licença
+Este projeto está licenciado sob a [Licença MIT](LICENSE).
