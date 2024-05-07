@@ -1,0 +1,19 @@
+version: '3.5'
+
+services:
+
+  api-endereco:
+    image: postgres:latest
+    container_name: api-endereco
+    environment:
+      POSTGRES_DB: "api-endereco"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+    volumes:
+      - api-endereco:/var/lib/postgresql/data
+    ports:
+      - "5434:5432"
+    restart: unless-stopped
+
+volumes:
+  api-endereco:

@@ -1,0 +1,19 @@
+version: '3.5'
+
+services:
+
+  api-consumo:
+    image: postgres:latest
+    container_name: api-consumo
+    environment:
+      POSTGRES_DB: "api-consumo"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+    volumes:
+      - api-consumo:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+volumes:
+  api-consumo:
